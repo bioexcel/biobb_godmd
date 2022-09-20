@@ -15,7 +15,7 @@ The latest documentation of this package can be found in our readthedocs site:
 [latest API documentation](http://biobb_godmd.readthedocs.io/en/latest/).
 
 ### Version
-v3.8.0 2022.3
+v3.8.1 2022.3
 
 ### Installation
 Using PIP:
@@ -45,13 +45,13 @@ Using DOCKER:
 * Installation:
 
 
-        docker pull quay.io/biocontainers/biobb_godmd:3.8.0--pyhdfd78af_0
+        docker pull quay.io/biocontainers/biobb_godmd:3.8.1--pyhdfd78af_0
 
 
 * Usage:
 
 
-        docker run quay.io/biocontainers/biobb_godmd:3.8.0--pyhdfd78af_0
+        docker run quay.io/biocontainers/biobb_godmd:3.8.1--pyhdfd78af_0
 
 
 [//]: # (Using SINGULARITY:)

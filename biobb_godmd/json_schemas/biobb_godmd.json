@@ -4,9 +4,9 @@
     "github" : "https://github.com/bioexcel/biobb_godmd", 
     "readthedocs" : "https://biobb-godmd.readthedocs.io/en/latest/", 
     "conda" : "https://anaconda.org/bioconda/biobb_godmd", 
-    "docker" : "https://quay.io/biocontainers/biobb_godmd:3.8.0--pyhdfd78af_1", 
+    "docker" : "https://quay.io/biocontainers/biobb_godmd:3.8.1--pyhdfd78af_1", 
     "singularity" : "https://www.singularity-hub.org/collections/2886/usage", 
-    "version" : "3.8.0",
+    "version" : "3.8.1",
     "rest": true,
     "tools" : [
         {
