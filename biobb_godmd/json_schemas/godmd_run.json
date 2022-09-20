@@ -1,0 +1,260 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://bioexcel.eu/biobb_godmd/json_schemas/1.0/godmd_run",
+    "name": "biobb_godmd GOdMDRun",
+    "title": "Wrapper of the GOdMD tool module.",
+    "description": "Computes conformational transition trajectories for proteins using GOdMD tool.",
+    "type": "object",
+    "info": {
+        "wrapped_software": {
+            "name": "GOdMD",
+            "version": ">=1.0",
+            "license": "Apache-2.0"
+        },
+        "ontology": {
+            "name": "EDAM",
+            "schema": "http://edamontology.org/EDAM.owl"
+        }
+    },
+    "required": [
+        "input_pdb_orig_path",
+        "input_pdb_target_path",
+        "input_aln_orig_path",
+        "input_aln_target_path",
+        "output_log_path",
+        "output_ener_path",
+        "output_trj_path"
+    ],
+    "properties": {
+        "input_pdb_orig_path": {
+            "type": "string",
+            "description": "Input PDB file to be used as origin in the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb",
+            "enum": [
+                ".*\\.pdb$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.pdb$",
+                    "description": "Input PDB file to be used as origin in the conformational transition",
+                    "edam": "format_1476"
+                }
+            ]
+        },
+        "input_pdb_target_path": {
+            "type": "string",
+            "description": "Input PDB file to be used as target in the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb",
+            "enum": [
+                ".*\\.pdb$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.pdb$",
+                    "description": "Input PDB file to be used as target in the conformational transition",
+                    "edam": "format_1476"
+                }
+            ]
+        },
+        "input_aln_orig_path": {
+            "type": "string",
+            "description": "Input GOdMD alignment file corresponding to the origin structure of the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln",
+            "enum": [
+                ".*\\.aln$",
+                ".*\\.txt$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.aln$",
+                    "description": "Input GOdMD alignment file corresponding to the origin structure of the conformational transition",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Input GOdMD alignment file corresponding to the origin structure of the conformational transition",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "input_aln_target_path": {
+            "type": "string",
+            "description": "Input GOdMD alignment file corresponding to the target structure of the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln",
+            "enum": [
+                ".*\\.aln$",
+                ".*\\.txt$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.aln$",
+                    "description": "Input GOdMD alignment file corresponding to the target structure of the conformational transition",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Input GOdMD alignment file corresponding to the target structure of the conformational transition",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "input_config_path": {
+            "type": "string",
+            "description": "Input GOdMD configuration file",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/params.in",
+            "enum": [
+                ".*\\.in$",
+                ".*\\.txt$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.in$",
+                    "description": "Input GOdMD configuration file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Input GOdMD configuration file",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "output_log_path": {
+            "type": "string",
+            "description": "Output log file",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd.log",
+            "enum": [
+                ".*\\.log$",
+                ".*\\.out$",
+                ".*\\.txt$",
+                ".*\\.o$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.log$",
+                    "description": "Output log file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.out$",
+                    "description": "Output log file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Output log file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.o$",
+                    "description": "Output log file",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "output_ener_path": {
+            "type": "string",
+            "description": "Output energy file",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out",
+            "enum": [
+                ".*\\.log$",
+                ".*\\.out$",
+                ".*\\.txt$",
+                ".*\\.o$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.log$",
+                    "description": "Output energy file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.out$",
+                    "description": "Output energy file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Output energy file",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.o$",
+                    "description": "Output energy file",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "output_trj_path": {
+            "type": "string",
+            "description": "Output trajectory file",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd",
+            "enum": [
+                ".*\\.trj$",
+                ".*\\.crd$",
+                ".*\\.mdcrd$",
+                ".*\\.x$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.trj$",
+                    "description": "Output trajectory file",
+                    "edam": "format_3878"
+                },
+                {
+                    "extension": ".*\\.crd$",
+                    "description": "Output trajectory file",
+                    "edam": "format_3878"
+                },
+                {
+                    "extension": ".*\\.mdcrd$",
+                    "description": "Output trajectory file",
+                    "edam": "format_3878"
+                },
+                {
+                    "extension": ".*\\.x$",
+                    "description": "Output trajectory file",
+                    "edam": "format_3878"
+                }
+            ]
+        },
+        "properties": {
+            "type": "object",
+            "properties": {
+                "godmdin": {
+                    "type": "object",
+                    "default": {},
+                    "wf_prop": false,
+                    "description": "GOdMD options specification."
+                },
+                "binary_path": {
+                    "type": "string",
+                    "default": "discrete",
+                    "wf_prop": false,
+                    "description": "Binary path."
+                },
+                "remove_tmp": {
+                    "type": "boolean",
+                    "default": true,
+                    "wf_prop": true,
+                    "description": "Remove temporal files."
+                },
+                "restart": {
+                    "type": "boolean",
+                    "default": false,
+                    "wf_prop": true,
+                    "description": "Do not execute if output files exist."
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}

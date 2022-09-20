@@ -1,0 +1,138 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://bioexcel.eu/biobb_godmd/json_schemas/1.0/godmd_prep",
+    "name": "biobb_godmd GOdMDPrep",
+    "title": "Helper bb to prepare inputs for the GOdMD tool module.",
+    "description": "Prepares input files for the GOdMD tool.",
+    "type": "object",
+    "info": {
+        "wrapped_software": {
+            "name": "In house",
+            "license": "Apache-2.0"
+        },
+        "ontology": {
+            "name": "EDAM",
+            "schema": "http://edamontology.org/EDAM.owl"
+        }
+    },
+    "required": [
+        "input_pdb_orig_path",
+        "input_pdb_target_path",
+        "output_aln_orig_path",
+        "output_aln_target_path"
+    ],
+    "properties": {
+        "input_pdb_orig_path": {
+            "type": "string",
+            "description": "Input PDB file to be used as origin in the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb",
+            "enum": [
+                ".*\\.pdb$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.pdb$",
+                    "description": "Input PDB file to be used as origin in the conformational transition",
+                    "edam": "format_1476"
+                }
+            ]
+        },
+        "input_pdb_target_path": {
+            "type": "string",
+            "description": "Input PDB file to be used as target in the conformational transition",
+            "filetype": "input",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb",
+            "enum": [
+                ".*\\.pdb$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.pdb$",
+                    "description": "Input PDB file to be used as target in the conformational transition",
+                    "edam": "format_1476"
+                }
+            ]
+        },
+        "output_aln_orig_path": {
+            "type": "string",
+            "description": "Output GOdMD alignment file corresponding to the origin structure of the conformational transition",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln",
+            "enum": [
+                ".*\\.aln$",
+                ".*\\.txt$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.aln$",
+                    "description": "Output GOdMD alignment file corresponding to the origin structure of the conformational transition",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Output GOdMD alignment file corresponding to the origin structure of the conformational transition",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "output_aln_target_path": {
+            "type": "string",
+            "description": "Output GOdMD alignment file corresponding to the target structure of the conformational transition",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln",
+            "enum": [
+                ".*\\.aln$",
+                ".*\\.txt$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.aln$",
+                    "description": "Output GOdMD alignment file corresponding to the target structure of the conformational transition",
+                    "edam": "format_2330"
+                },
+                {
+                    "extension": ".*\\.txt$",
+                    "description": "Output GOdMD alignment file corresponding to the target structure of the conformational transition",
+                    "edam": "format_2330"
+                }
+            ]
+        },
+        "properties": {
+            "type": "object",
+            "properties": {
+                "gapopen": {
+                    "type": "number",
+                    "default": 12.0,
+                    "wf_prop": false,
+                    "description": "Standard gap penalty: score taken away when a gap is created."
+                },
+                "gapextend": {
+                    "type": "number",
+                    "default": 2.0,
+                    "wf_prop": false,
+                    "description": "Penalty added to the standard gap penalty for each base or residue in the gap."
+                },
+                "datafile": {
+                    "type": "string",
+                    "default": "EPAM250",
+                    "wf_prop": false,
+                    "description": "Scoring matrix file used when comparing sequences."
+                },
+                "remove_tmp": {
+                    "type": "boolean",
+                    "default": true,
+                    "wf_prop": true,
+                    "description": "Remove temporal files."
+                },
+                "restart": {
+                    "type": "boolean",
+                    "default": false,
+                    "wf_prop": true,
+                    "description": "Do not execute if output files exist."
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}

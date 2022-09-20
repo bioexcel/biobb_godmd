@@ -1,0 +1,31 @@
+working_dir_path: /tmp/biobb/unitests
+
+# godmd
+
+godmd_prep:
+  paths:
+    input_pdb_orig_path: file:test_data_dir/godmd/1ake_A.pdb
+    input_pdb_target_path: file:test_data_dir/godmd/4ake_A.pdb
+    output_aln_orig_path: godmd_orig.aln
+    ref_output_aln_orig_path: file:test_reference_dir/godmd/1ake_A.aln
+    output_aln_target_path: godmd_target.aln
+    ref_output_aln_target_path: file:test_reference_dir/godmd/4ake_A.aln
+  properties:
+    gapopen: '12.0'
+    gapextend: '2'
+
+godmd_run:
+  paths:
+    input_pdb_orig_path: file:test_data_dir/godmd/1ake_A.pdb
+    input_pdb_target_path: file:test_data_dir/godmd/4ake_A.pdb
+    input_aln_orig_path: file:test_data_dir/godmd/1ake_A.aln
+    input_aln_target_path: file:test_data_dir/godmd/4ake_A.aln
+    input_config_path: file:test_data_dir/godmd/params.in
+    output_log_path: godmd.log
+    ref_output_log_path: file:test_reference_dir/godmd/godmd.log
+    output_ene_path: godmd_ene.out
+    ref_output_ene_path: file:test_reference_dir/godmd/godmd_ene.out
+    output_trj_path: godmd_trj.mdcrd
+    ref_output_trj_path: file:test_reference_dir/godmd/godmd_trj.mdcrd
+  properties:
+    remove_tmp: True

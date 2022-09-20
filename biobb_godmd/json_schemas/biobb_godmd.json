@@ -1,0 +1,45 @@
+{
+    "_id": "biobb_godmd",
+    "desc" : "Biobb_godmd is the Biobb module collection to compute protein conformational transitions with the GOdMD method.", 
+    "github" : "https://github.com/bioexcel/biobb_godmd", 
+    "readthedocs" : "https://biobb-godmd.readthedocs.io/en/latest/", 
+    "conda" : "https://anaconda.org/bioconda/biobb_godmd", 
+    "docker" : "https://quay.io/biocontainers/biobb_godmd:3.8.0--pyhdfd78af_1", 
+    "singularity" : "https://www.singularity-hub.org/collections/2886/usage", 
+    "version" : "3.8.0",
+    "rest": true,
+    "tools" : [
+        {
+            "block" : "GoDMD_prep", 
+            "tool" : "GOdMD", 
+            "desc" : "Helper BioBB to prepare inputs for the GOdMD tool (protein conformational transitions).",
+            "exec" : "godmd_prep",
+            "docs": "https://biobb-godmd.readthedocs.io/en/latest/godmd.html#module-godmd.godmd_prep",
+            "rest": false
+        }, 
+        {
+            "block" : "GoDMD_run", 
+            "tool" : "GOdMD", 
+            "desc" : "Wrapper of the GOdMD tool to compute protein conformational transitions.",
+            "exec" : "godmd_run",
+            "docs": "https://biobb-godmd.readthedocs.io/en/latest/godmd.html#module-godmd.godmd_run",
+            "rest": true
+        },
+    ],
+    "dep_pypi" : [
+        "install_requires=['biobb_common==3.8.1']", 
+        "python_requires='>=3.7'"
+    ], 
+    "dep_conda" : [
+        "python >=3.7", 
+        "biobb_common ==3.8.1", 
+        "godmd ==1.0.0"
+    ],
+    "keywords" : [
+        "godmd", 
+        "dmd", 
+        "conformations", 
+        "ensemble",
+        "transitions"
+    ]
+}
