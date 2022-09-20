@@ -22,7 +22,7 @@ setuptools.setup(
     python_requires='==3.7.*',
     entry_points={
         "console_scripts": [
-            "godmd_prep = biobb_godmd.godmd.godmd_prep:main"
+            "godmd_prep = biobb_godmd.godmd.godmd_prep:main",
             "godmd_run = biobb_godmd.godmd.godmd_run:main"
         ]
     },
