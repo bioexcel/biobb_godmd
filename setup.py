@@ -19,7 +19,7 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(exclude=['docs', 'test']),
     install_requires=['biobb_common==3.8.1'],
-    python_requires='==3.7.*',
+    python_requires='>=3.7',
     entry_points={
         "console_scripts": [
             "godmd_prep = biobb_godmd.godmd.godmd_prep:main",
