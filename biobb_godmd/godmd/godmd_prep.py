@@ -2,15 +2,13 @@
 
 """Module containing the GOdMDPrep class and the command line interface."""
 import argparse
-import json
-import shutil, re, os
-import collections.abc
-from pathlib import Path, PurePath
+from pathlib import PurePath
 from biobb_common.generic.biobb_object import BiobbObject
-from biobb_common.configuration import  settings
+from biobb_common.configuration import settings
 from biobb_common.tools import file_utils as fu
 from biobb_common.tools.file_utils import launchlogger
-from biobb_godmd.godmd.common import *
+from biobb_godmd.godmd.common import check_input_path, check_output_path
+
 
 class GOdMDPrep(BiobbObject):
     """
@@ -54,51 +52,52 @@ class GOdMDPrep(BiobbObject):
 
     """
     def __init__(self, input_pdb_orig_path: str, input_pdb_target_path: str,
-    output_aln_orig_path: str, output_aln_target_path: str, 
-    properties: dict = None, **kwargs) -> None:
+                 output_aln_orig_path: str, output_aln_target_path: str,
+                 properties: dict = None, **kwargs) -> None:
 
         properties = properties or {}
 
         # Call parent class constructor
         super().__init__(properties)
+        self.locals_var_dict = locals().copy()
 
         self.AA_TRANSLATOR = {'GLY': 'G',
-                        'ALA': 'A',
-                        'VAL': 'V',
-                        'LEU': 'L',
-                        'ILE': 'I',
-                        'MET': 'M',
-                        'PHE': 'F',
-                        'TRP': 'W',
-                        'PRO': 'P',
-                        'SER': 'S',
-                        'THR': 'T',
-                        'CYS': 'C',
-                        'CYX': 'C',
-                        'CYM': 'C',
-                        'TYR': 'Y',
-                        'TYM': 'Y',
-                        'ASN': 'N',
-                        'GLN': 'Q',
-                        'ASP': 'D',
-                        'ASH': 'D',
-                        'GLU': 'E',
-                        'GLH': 'E',
-                        'LYS': 'K',
-                        'LYN': 'K',
-                        'ARG': 'R',
-                        'ARN': 'R',
-                        'HIS': 'H',
-                        'HIE': 'H',
-                        'HID': 'H',
-                        'HIP': 'H'}
+                              'ALA': 'A',
+                              'VAL': 'V',
+                              'LEU': 'L',
+                              'ILE': 'I',
+                              'MET': 'M',
+                              'PHE': 'F',
+                              'TRP': 'W',
+                              'PRO': 'P',
+                              'SER': 'S',
+                              'THR': 'T',
+                              'CYS': 'C',
+                              'CYX': 'C',
+                              'CYM': 'C',
+                              'TYR': 'Y',
+                              'TYM': 'Y',
+                              'ASN': 'N',
+                              'GLN': 'Q',
+                              'ASP': 'D',
+                              'ASH': 'D',
+                              'GLU': 'E',
+                              'GLH': 'E',
+                              'LYS': 'K',
+                              'LYN': 'K',
+                              'ARG': 'R',
+                              'ARN': 'R',
+                              'HIS': 'H',
+                              'HIE': 'H',
+                              'HID': 'H',
+                              'HIP': 'H'}
 
         # Input/Output files
         self.io_dict = {
-            'in': { 'input_pdb_orig_path': input_pdb_orig_path,
-                    'input_pdb_target_path': input_pdb_target_path },
-            'out': { 'output_aln_orig_path': output_aln_orig_path,
-                     'output_aln_target_path': output_aln_target_path }
+            'in': {'input_pdb_orig_path': input_pdb_orig_path,
+                   'input_pdb_target_path': input_pdb_target_path},
+            'out': {'output_aln_orig_path': output_aln_orig_path,
+                    'output_aln_target_path': output_aln_target_path}
         }
 
         # Properties specific for BB
@@ -109,6 +108,7 @@ class GOdMDPrep(BiobbObject):
 
         # Check the properties
         self.check_properties(properties)
+        self.check_arguments()
 
     def check_data_params(self, out_log, out_err):
         """ Checks input/output paths correctness """
@@ -118,8 +118,8 @@ class GOdMDPrep(BiobbObject):
         self.io_dict["in"]["input_pdb_target_path"] = check_input_path(self.io_dict["in"]["input_pdb_target_path"], "input_pdb_target_path", False, out_log, self.__class__.__name__)
 
         # Check output(s)
-        self.io_dict["out"]["output_aln_orig_path"] = check_output_path(self.io_dict["out"]["output_aln_orig_path"],"output_aln_orig_path", False, out_log, self.__class__.__name__)
-        self.io_dict["out"]["output_aln_target_path"] = check_output_path(self.io_dict["out"]["output_aln_target_path"],"output_aln_target_path", False, out_log, self.__class__.__name__)
+        self.io_dict["out"]["output_aln_orig_path"] = check_output_path(self.io_dict["out"]["output_aln_orig_path"], "output_aln_orig_path", False, out_log, self.__class__.__name__)
+        self.io_dict["out"]["output_aln_target_path"] = check_output_path(self.io_dict["out"]["output_aln_target_path"], "output_aln_target_path", False, out_log, self.__class__.__name__)
 
     def extract_sequence(self, pdb):
         '''
@@ -130,20 +130,24 @@ class GOdMDPrep(BiobbObject):
         with open(pdb) as file:
             for line in file:
                 line = line.rstrip('\n')
-                record = line[:6].replace(" ","")
-                if record != 'ATOM' : continue
+                record = line[:6].replace(" ", "")
+                if record != 'ATOM':
+                    continue
                 atomname = line[12:16]
-                atomname = atomname.replace(" ","")
-                if atomname != 'CA': continue
+                atomname = atomname.replace(" ", "")
+                if atomname != 'CA':
+                    continue
                 alternate = line[16]
                 if alternate != ' ':
-                    if alternate != 'A': continue # if alt loc, only A-labeled residues
-                resname = line[17:20].replace(" ","")
-                if resname not in self.AA_TRANSLATOR: continue
-                resnum = line[22:26].replace(" ","")
+                    if alternate != 'A':
+                        continue  # if alt loc, only A-labeled residues
+                resname = line[17:20].replace(" ", "")
+                if resname not in self.AA_TRANSLATOR:
+                    continue
+                resnum = line[22:26].replace(" ", "")
                 icode = line[26:27]
                 seq += self.AA_TRANSLATOR[resname]
-                resids += [(' ',int(resnum),icode)] # BioPython's standard PDB atom id (' ',resid,insertioncode) (e.g. (' ',40,'B'))
+                resids += [(' ', int(resnum), icode)]  # BioPython's standard PDB atom id (' ',resid,insertioncode) (e.g. (' ',40,'B'))
 
         return seq, resids
 
@@ -206,13 +210,16 @@ class GOdMDPrep(BiobbObject):
         resid_pairs = []
         idx1 = int(qstart)-2
         idx2 = int(sstart)-2
-        for i in range(len(qseq)): # it could be also len(sseq)
-            if qseq[i] != '-': idx1 += 1
-            if sseq[i] != '-': idx2 += 1
-            if qseq[i] == '-' or sseq[i] == '-': continue
-            resid_pairs += [(resids1[idx1],resids2[idx2])]
+        for i in range(len(qseq)):  # it could be also len(sseq)
+            if qseq[i] != '-':
+                idx1 += 1
+            if sseq[i] != '-':
+                idx2 += 1
+            if qseq[i] == '-' or sseq[i] == '-':
+                continue
+            resid_pairs += [(resids1[idx1], resids2[idx2])]
         # Check contents of the residues of the alignment
-        if len(resid_pairs) == 0: # Alignment file was empty or there was no possible matching residues between the PDBs
+        if len(resid_pairs) == 0:  # Alignment file was empty or there was no possible matching residues between the PDBs
             fu.log('Alignment file was empty or there was no possible matching residues between the PDBs' % self.tmp_folder, self.out_log)
             return False, False
         else:
@@ -226,7 +233,8 @@ class GOdMDPrep(BiobbObject):
         self.check_data_params(self.out_log, self.err_log)
 
         # Setup Biobb
-        if self.check_restart(): return 0
+        if self.check_restart():
+            return 0
         self.stage_files()
 
         # Starting the work...
@@ -235,17 +243,17 @@ class GOdMDPrep(BiobbObject):
         pdb2 = self.io_dict["in"]["input_pdb_target_path"]
 
         # Generate sequence of first PDB
-        seq1,resids1 = self.extract_sequence(pdb1)
-                    
+        seq1, resids1 = self.extract_sequence(pdb1)
+
         # Generate sequence of second PDB
-        seq2,resids2 = self.extract_sequence(pdb2)
+        seq2, resids2 = self.extract_sequence(pdb2)
 
         if len(seq1) < 50:
             fu.log('WARNING: Short sequence (ORIGIN)' % self.tmp_folder, self.out_log)
-            #print("short_sequence ORIGIN",len(seq1))
+            # print("short_sequence ORIGIN",len(seq1))
         if len(seq2) < 50:
             fu.log('WARNING: Short sequence (TARGET)' % self.tmp_folder, self.out_log)
-            #print("short_sequence TARGET",len(seq2))
+            # print("short_sequence TARGET",len(seq2))
 
         # Creating temporary folder
         self.tmp_folder = fu.create_unique_dir()
@@ -261,28 +269,28 @@ class GOdMDPrep(BiobbObject):
         fasta2File.write(">"+pdb2+"\n"+seq2)
         fasta2File.close()
 
-        waterFilename = str(PurePath(self.tmp_folder).joinpath("water_align.out")) 
-  
-        # water -auto -outfile=water_align.out -asequence=1ake.chains.nolig.pdb.fa 
-        # -bsequence=4ake.chains.pdb.fa -gapopen=12 -gapextend=2 
+        waterFilename = str(PurePath(self.tmp_folder).joinpath("water_align.out"))
+
+        # water -auto -outfile=water_align.out -asequence=1ake.chains.nolig.pdb.fa
+        # -bsequence=4ake.chains.pdb.fa -gapopen=12 -gapextend=2
         # -datafile=EPAM250 -aformat=markx10
 
         # Command line
         self.cmd = ["water",
-               '-auto', 
-               '-outfile', waterFilename,
-               '-asequence', fasta1Filename,
-               '-bsequence', fasta2Filename,
-               '-gapopen', self.gapopen,
-               '-gapextend', self.gapextend,
-               '-datafile', self.datafile,
-               '-aformat', "markx10"
-               ]
+                    '-auto',
+                    '-outfile', waterFilename,
+                    '-asequence', fasta1Filename,
+                    '-bsequence', fasta2Filename,
+                    '-gapopen', self.gapopen,
+                    '-gapextend', self.gapextend,
+                    '-datafile', self.datafile,
+                    '-aformat', "markx10"
+                    ]
 
         # Run Biobb block
         self.run_biobb()
 
-        # Starting post-alignment process: generating .aln files 
+        # Starting post-alignment process: generating .aln files
 
         # Retrieve sequence identity of the pair, based on local sequence alignment
         # previously computed, and generate the pairs of residues from both structres
@@ -292,33 +300,42 @@ class GOdMDPrep(BiobbObject):
         aln1Filename = self.io_dict["out"]["output_aln_orig_path"]
         aln1File = open(aln1Filename, 'w')
         for pair in resid_pairs:
-            aln1File.write("%s%s\n" %(pair[0][1],pair[0][2].replace(" ","")))
+            aln1File.write("%s%s\n" % (pair[0][1], pair[0][2].replace(" ", "")))
         aln1File.close()
 
         aln2Filename = self.io_dict["out"]["output_aln_target_path"]
         aln2File = open(aln2Filename, 'w')
         for pair in resid_pairs:
-            aln2File.write("%s%s\n" %(pair[1][1],pair[1][2].replace(" ","")))
+            aln2File.write("%s%s\n" % (pair[1][1], pair[1][2].replace(" ", "")))
         aln2File.close()
 
+        # Copy files to host
+        self.copy_to_host()
+
         # remove temporary folder(s)
-        if self.remove_tmp:
-            self.tmp_files.append(self.tmp_folder)
-            self.remove_tmp_files()
+        self.tmp_files.extend([
+            self.stage_io_dict.get("unique_dir"),
+            self.tmp_folder
+        ])
+        self.remove_tmp_files()
+
+        self.check_arguments(output_files_created=True, raise_exception=False)
 
         return self.return_code
 
+
 def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
-            output_aln_orig_path: str, output_aln_target_path: str, 
-            properties: dict = None, **kwargs) -> int:
+               output_aln_orig_path: str, output_aln_target_path: str,
+               properties: dict = None, **kwargs) -> int:
     """Create :class:`GOdMDPrep <godmd.godmd_prep.GOdMDPrep>`godmd.godmd_prep.GOdMDPrep class and
     execute :meth:`launch() <godmd.godmd_prep.GOdMDPrep.launch>` method"""
 
-    return GOdMDPrep( input_pdb_orig_path=input_pdb_orig_path,
-                    input_pdb_target_path=input_pdb_target_path,
-                    output_aln_orig_path=output_aln_orig_path,
-                    output_aln_target_path=output_aln_target_path,
-                    properties=properties).launch()
+    return GOdMDPrep(input_pdb_orig_path=input_pdb_orig_path,
+                     input_pdb_target_path=input_pdb_target_path,
+                     output_aln_orig_path=output_aln_orig_path,
+                     output_aln_target_path=output_aln_target_path,
+                     properties=properties).launch()
+
 
 def main():
     parser = argparse.ArgumentParser(description='Prepares input files for the GOdMD tool.', formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999))
@@ -332,17 +349,18 @@ def main():
     required_args.add_argument('--output_aln_target_path', required=True, help='Output GOdMD alignment file corresponding to the target structure of the conformational transition. Accepted formats: aln, txt.')
 
     args = parser.parse_args()
-    #config = args.config if args.config else None
+    # config = args.config if args.config else None
     args.config = args.config or "{}"
-    #properties = settings.ConfReader(config=config).get_prop_dic()
+    # properties = settings.ConfReader(config=config).get_prop_dic()
     properties = settings.ConfReader(config=args.config).get_prop_dic()
 
     # Specific call
-    godmd_prep(      input_pdb_orig_path=args.input_pdb_orig_path,
-                    input_pdb_target_path=args.input_pdb_target_path,
-                    output_aln_orig_path=args.output_aln_orig_path,
-                    output_aln_target_path=args.output_aln_target_path,
-                    properties=properties)
+    godmd_prep(input_pdb_orig_path=args.input_pdb_orig_path,
+               input_pdb_target_path=args.input_pdb_target_path,
+               output_aln_orig_path=args.output_aln_orig_path,
+               output_aln_target_path=args.output_aln_target_path,
+               properties=properties)
+
 
 if __name__ == '__main__':
     main()
