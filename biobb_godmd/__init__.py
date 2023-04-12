@@ -1,3 +1,3 @@
 name = "biobb_godmd"
 __all__ = ["godmd"]
-__version__ = "3.8.1"
+__version__ = "4.0.0"

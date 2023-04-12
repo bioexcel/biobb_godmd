@@ -4,9 +4,9 @@
     "github" : "https://github.com/bioexcel/biobb_godmd", 
     "readthedocs" : "https://biobb-godmd.readthedocs.io/en/latest/", 
     "conda" : "https://anaconda.org/bioconda/biobb_godmd", 
-    "docker" : "https://quay.io/biocontainers/biobb_godmd:3.8.1--pyhdfd78af_1", 
-    "singularity" : "https://www.singularity-hub.org/collections/2886/usage", 
-    "version" : "3.8.1",
+    "docker" : "https://quay.io/biocontainers/biobb_godmd:4.0.0--pyhdfd78af_0", 
+    "singularity" : "https://depot.galaxyproject.org/singularity/biobb_godmd:4.0.0--pyhdfd78af_0", 
+    "version" : "4.0.0",
     "rest": true,
     "tools" : [
         {
@@ -24,16 +24,17 @@
             "exec" : "godmd_run",
             "docs": "https://biobb-godmd.readthedocs.io/en/latest/godmd.html#module-godmd.godmd_run",
             "rest": true
-        },
+        }
     ],
     "dep_pypi" : [
-        "install_requires=['biobb_common==3.8.1']", 
+        "install_requires=['biobb_common==4.0.0']", 
         "python_requires='>=3.7'"
     ], 
     "dep_conda" : [
         "python >=3.7", 
-        "biobb_common ==3.8.1", 
-        "godmd ==1.0.0"
+        "biobb_common ==4.0.0", 
+        "godmd ==1.0.0",
+        "emboss"
     ],
     "keywords" : [
         "godmd", 

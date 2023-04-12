@@ -203,7 +203,7 @@ class GOdMDRun(BiobbObject):
 
 
 def godmd_run(input_pdb_orig_path: str, input_pdb_target_path: str,
-              input_aln_orig_path: str, input_aln_target_path: str, 
+              input_aln_orig_path: str, input_aln_target_path: str,
               output_log_path: str, output_ene_path: str, output_trj_path: str,
               input_config_path: str = None, properties: dict = None, **kwargs) -> int:
     """Create :class:`GOdMDRun <godmd.godmd_run.GOdMDRun>`godmd.godmd_run.GOdMDRun class and
