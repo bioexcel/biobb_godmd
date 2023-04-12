@@ -22,7 +22,7 @@
         "input_aln_orig_path",
         "input_aln_target_path",
         "output_log_path",
-        "output_ener_path",
+        "output_ene_path",
         "output_trj_path"
     ],
     "properties": {
@@ -158,7 +158,7 @@
                 }
             ]
         },
-        "output_ener_path": {
+        "output_ene_path": {
             "type": "string",
             "description": "Output energy file",
             "filetype": "output",

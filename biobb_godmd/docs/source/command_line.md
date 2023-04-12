@@ -48,7 +48,7 @@ Config input / output arguments for this building block:
 * **input_aln_target_path** (*string*): Input GOdMD alignment file corresponding to the target structure of the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln). Accepted formats: ALN, TXT
 * **input_config_path** (*string*): Input GOdMD configuration file. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/params.in). Accepted formats: IN, TXT
 * **output_log_path** (*string*): Output log file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd.log). Accepted formats: LOG, OUT, TXT, O
-* **output_ener_path** (*string*): Output energy file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out). Accepted formats: LOG, OUT, TXT, O
+* **output_ene_path** (*string*): Output energy file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out). Accepted formats: LOG, OUT, TXT, O
 * **output_trj_path** (*string*): Output trajectory file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd). Accepted formats: TRJ, CRD, MDCRD, X
 ### Config
 Syntax: input_parameter (datatype) - (default_value) Definition
@@ -67,7 +67,7 @@ properties:
 ```
 #### Command line
 ```python
-godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ener_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
+godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
 ```
 ### JSON
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.json)
@@ -80,7 +80,7 @@ godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input
 ```
 #### Command line
 ```python
-godmd_run --config config_godmd_run.json --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ener_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
+godmd_run --config config_godmd_run.json --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
 ```
 
 ## Godmd_prep

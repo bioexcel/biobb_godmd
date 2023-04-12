@@ -8,7 +8,7 @@ class TestGOdMDPrep():
 
     def teardown_class(self):
         fx.test_teardown(self)
-        pass
+        # pass
 
     def test_godmd_prep(self):
         godmd_prep(properties=self.properties, **self.paths)
