@@ -13,7 +13,7 @@ Command:
 ```python
 godmd_run -h
 ```
-    usage: godmd_run [-h] [--config CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --input_aln_orig_path INPUT_ALN_ORIG_PATH --input_aln_target_path INPUT_ALN_TARGET_PATH [--input_config_path INPUT_CONFIG_PATH] --output_log_path OUTPUT_LOG_PATH --output_ene_path OUTPUT_ENE_PATH --output_trj_path OUTPUT_TRJ_PATH
+    usage: godmd_run [-h] [--config CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --input_aln_orig_path INPUT_ALN_ORIG_PATH --input_aln_target_path INPUT_ALN_TARGET_PATH [--input_config_path INPUT_CONFIG_PATH] --output_log_path OUTPUT_LOG_PATH --output_ene_path OUTPUT_ENE_PATH --output_trj_path OUTPUT_TRJ_PATH --output_pdb_path OUTPUT_PDB_PATH
     
     Computing conformational transition trajectories for proteins using GOdMD tool.
     
@@ -38,6 +38,8 @@ godmd_run -h
                             Output energy file. Accepted formats: log, out, txt.
       --output_trj_path OUTPUT_TRJ_PATH
                             Output trajectory file. Accepted formats: mdcrd.
+      --output_pdb_path OUTPUT_PDB_PATH
+                            Output structure file. Accepted formats: pdb.
 ### I / O Arguments
 Syntax: input_argument (datatype) : Definition
 
@@ -50,6 +52,7 @@ Config input / output arguments for this building block:
 * **output_log_path** (*string*): Output log file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd.log). Accepted formats: LOG, OUT, TXT, O
 * **output_ene_path** (*string*): Output energy file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out). Accepted formats: LOG, OUT, TXT, O
 * **output_trj_path** (*string*): Output trajectory file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd). Accepted formats: TRJ, CRD, MDCRD, X
+* **output_pdb_path** (*string*): Output structure file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_pdb.pdb). Accepted formats: PDB
 ### Config
 Syntax: input_parameter (datatype) - (default_value) Definition
 
@@ -67,7 +70,7 @@ properties:
 ```
 #### Command line
 ```python
-godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
+godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd --output_pdb_path godmd_pdb.pdb
 ```
 ### JSON
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.json)
@@ -80,7 +83,7 @@ godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input
 ```
 #### Command line
 ```python
-godmd_run --config config_godmd_run.json --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd
+godmd_run --config config_godmd_run.json --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd --output_pdb_path godmd_pdb.pdb
 ```
 
 ## Godmd_prep

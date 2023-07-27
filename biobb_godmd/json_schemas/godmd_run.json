@@ -23,7 +23,8 @@
         "input_aln_target_path",
         "output_log_path",
         "output_ene_path",
-        "output_trj_path"
+        "output_trj_path",
+        "output_pdb_path"
     ],
     "properties": {
         "input_pdb_orig_path": {
@@ -223,6 +224,22 @@
                     "extension": ".*\\.x$",
                     "description": "Output trajectory file",
                     "edam": "format_3878"
+                }
+            ]
+        },
+        "output_pdb_path": {
+            "type": "string",
+            "description": "Output structure file",
+            "filetype": "output",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_pdb.pdb",
+            "enum": [
+                ".*\\.pdb$"
+            ],
+            "file_formats": [
+                {
+                    "extension": ".*\\.pdb$",
+                    "description": "Output structure file",
+                    "edam": "format_1476"
                 }
             ]
         },
