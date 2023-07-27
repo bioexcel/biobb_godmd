@@ -27,5 +27,7 @@ godmd_run:
     ref_output_ene_path: file:test_reference_dir/godmd/godmd_ene.out
     output_trj_path: godmd_trj.mdcrd
     ref_output_trj_path: file:test_reference_dir/godmd/godmd_trj.mdcrd
+    output_pdb_path: godmd_pdb.pdb
+    ref_output_pdb_path: file:test_reference_dir/godmd/godmd_pdb.pdb
   properties:
     remove_tmp: True

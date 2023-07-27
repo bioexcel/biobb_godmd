@@ -46,5 +46,6 @@ def is_valid_file(ext, argument):
         'output_log_path': ['log', 'out', 'txt'],
         'output_ene_path': ['log', 'out', 'txt'],
         'output_trj_path': ['x', 'trj', 'crd', 'mdcrd'],
+        'output_pdb_path': ['pdb']
     }
     return ext in formats[argument]

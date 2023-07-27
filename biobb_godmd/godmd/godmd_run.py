@@ -2,7 +2,9 @@
 
 """Module containing the GOdMDRun class and the command line interface."""
 import argparse
+import shutil
 from pathlib import Path
+from pathlib import PurePath
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.configuration import settings
 from biobb_common.tools import file_utils as fu
@@ -25,6 +27,7 @@ class GOdMDRun(BiobbObject):
         output_log_path (str): Output log file. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd.log>`_. Accepted formats: log (edam:format_2330), out (edam:format_2330), txt (edam:format_2330), o (edam:format_2330).
         output_ene_path (str): Output energy file. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out>`_. Accepted formats: log (edam:format_2330), out (edam:format_2330), txt (edam:format_2330), o (edam:format_2330).
         output_trj_path (str): Output trajectory file. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd>`_. Accepted formats: trj (edam:format_3878), crd (edam:format_3878), mdcrd (edam:format_3878), x (edam:format_3878).
+        output_pdb_path (str): Output structure file. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_pdb.pdb>`_. Accepted formats: pdb (edam:format_1476).
         properties (dict - Python dictionary object containing the tool parameters, not input/output files):
             * **godmdin** (*dict*) - ({}) GOdMD options specification.
             * **binary_path** (*str*) - ("discrete") Binary path.
@@ -45,6 +48,7 @@ class GOdMDRun(BiobbObject):
                          output_log_path='/path/to/godmd_log.log',
                          output_ene_path='/path/to/godmd_ene.txt',
                          output_trj_path='/path/to/godmd_trj.mdcrd',
+                         output_pdb_path='/path/to/godmd_pdb.pdb',
                          properties=prop)
 
     Info:
@@ -59,7 +63,7 @@ class GOdMDRun(BiobbObject):
     """
     def __init__(self, input_pdb_orig_path: str, input_pdb_target_path: str,
                  input_aln_orig_path: str, input_aln_target_path: str, input_config_path: str,
-                 output_log_path: str, output_ene_path: str, output_trj_path: str,
+                 output_log_path: str, output_ene_path: str, output_trj_path: str, output_pdb_path: str,
                  properties: dict = None, **kwargs) -> None:
 
         properties = properties or {}
@@ -77,7 +81,8 @@ class GOdMDRun(BiobbObject):
                    'input_config_path': input_config_path},
             'out': {'output_log_path': output_log_path,
                     'output_ene_path': output_ene_path,
-                    'output_trj_path': output_trj_path}
+                    'output_trj_path': output_trj_path,
+                    'output_pdb_path': output_pdb_path}
         }
 
         # Properties specific for BB
@@ -103,6 +108,7 @@ class GOdMDRun(BiobbObject):
         self.io_dict["out"]["output_log_path"] = check_output_path(self.io_dict["out"]["output_log_path"], "output_log_path", False, out_log, self.__class__.__name__)
         self.io_dict["out"]["output_ene_path"] = check_output_path(self.io_dict["out"]["output_ene_path"], "output_ene_path", False, out_log, self.__class__.__name__)
         self.io_dict["out"]["output_trj_path"] = check_output_path(self.io_dict["out"]["output_trj_path"], "output_trj_path", False, out_log, self.__class__.__name__)
+        self.io_dict["out"]["output_pdb_path"] = check_output_path(self.io_dict["out"]["output_pdb_path"], "output_pdb_path", False, out_log, self.__class__.__name__)
 
     def create_godmdin(self, path: str = None) -> str:
         """Creates a GOdMD configuration file (godmdin) using the properties file settings"""
@@ -187,6 +193,9 @@ class GOdMDRun(BiobbObject):
         # Run Biobb block
         self.run_biobb()
 
+        # Copy outputs from temporary folder to output path
+        shutil.copy2("reference.pdb", PurePath(self.io_dict["out"]["output_pdb_path"]).name)
+
         # Copy files to host
         self.copy_to_host()
 
@@ -204,7 +213,7 @@ class GOdMDRun(BiobbObject):
 
 def godmd_run(input_pdb_orig_path: str, input_pdb_target_path: str,
               input_aln_orig_path: str, input_aln_target_path: str,
-              output_log_path: str, output_ene_path: str, output_trj_path: str,
+              output_log_path: str, output_ene_path: str, output_trj_path: str, output_pdb_path: str,
               input_config_path: str = None, properties: dict = None, **kwargs) -> int:
     """Create :class:`GOdMDRun <godmd.godmd_run.GOdMDRun>`godmd.godmd_run.GOdMDRun class and
     execute :meth:`launch() <godmd.godmd_run.GOdMDRun.launch>` method"""
@@ -217,6 +226,7 @@ def godmd_run(input_pdb_orig_path: str, input_pdb_target_path: str,
                     output_log_path=output_log_path,
                     output_ene_path=output_ene_path,
                     output_trj_path=output_trj_path,
+                    output_pdb_path=output_pdb_path,
                     properties=properties).launch()
 
 
@@ -234,6 +244,7 @@ def main():
     required_args.add_argument('--output_log_path', required=True, help='Output log file. Accepted formats: log, out, txt.')
     required_args.add_argument('--output_ene_path', required=True, help='Output energy file. Accepted formats: log, out, txt.')
     required_args.add_argument('--output_trj_path', required=True, help='Output trajectory file. Accepted formats: mdcrd.')
+    required_args.add_argument('--output_pdb_path', required=True, help='Output structure file. Accepted formats: pdb.')
 
     args = parser.parse_args()
     # config = args.config if args.config else None
@@ -250,6 +261,7 @@ def main():
               output_log_path=args.output_log_path,
               output_ene_path=args.output_ene_path,
               output_trj_path=args.output_trj_path,
+              output_pdb_path=args.output_pdb_path,
               properties=properties)
 
 
