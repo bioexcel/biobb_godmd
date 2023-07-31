@@ -125,6 +125,7 @@ Config parameters for this building block:
 * **gapopen** (*number*): (12.0) Standard gap penalty: score taken away when a gap is created..
 * **gapextend** (*number*): (2.0) Penalty added to the standard gap penalty for each base or residue in the gap..
 * **datafile** (*string*): (EPAM250) Scoring matrix file used when comparing sequences..
+* **binary_path** (*string*): (water) Binary path..
 * **remove_tmp** (*boolean*): (True) Remove temporal files..
 * **restart** (*boolean*): (False) Do not execute if output files exist..
 ### YAML

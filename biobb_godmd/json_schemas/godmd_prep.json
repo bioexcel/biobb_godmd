@@ -119,6 +119,12 @@
                     "wf_prop": false,
                     "description": "Scoring matrix file used when comparing sequences."
                 },
+                "binary_path": {
+                    "type": "string",
+                    "default": "water",
+                    "wf_prop": false,
+                    "description": "Binary path."
+                },
                 "remove_tmp": {
                     "type": "boolean",
                     "default": true,

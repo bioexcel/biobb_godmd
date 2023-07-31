@@ -1,5 +1,13 @@
 # Biobb GOdMD changelog
 
+## What's new in version [4.0.2](https://github.com/bioexcel/biobb_godmd/releases/tag/v4.0.2)?
+In version 4.0.2 the module godmd_run and godmd_prep have been fixed.
+
+### New features
+
+* Fixes in godmd_run
+* Fixes in godmd_prep
+
 ## What's new in version [4.0.1](https://github.com/bioexcel/biobb_godmd/releases/tag/v4.0.1)?
 In version 4.0.1 the module godmd_run has been fixed.
 
