@@ -7,7 +7,6 @@ from pathlib import Path
 from pathlib import PurePath
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.configuration import settings
-from biobb_common.tools import file_utils as fu
 from biobb_common.tools.file_utils import launchlogger
 from biobb_godmd.godmd.common import check_input_path, check_output_path
 
@@ -169,32 +168,27 @@ class GOdMDRun(BiobbObject):
             return 0
         self.stage_files()
 
-        # Creating temporary folder
-        self.tmp_folder = fu.create_unique_dir()
-        fu.log('Creating %s temporary folder' % self.tmp_folder, self.out_log)
-
         # Creating GOdMD input file
-        self.output_godmdin_path = self.create_godmdin(path=str(Path(self.tmp_folder).joinpath("godmd.in")))
+        self.output_godmdin_path = self.create_godmdin(path=str(Path(self.stage_io_dict["unique_dir"]).joinpath("godmd.in")))
 
         # Command line
         # discrete -i $fileName.in -pdbin $pdbch1 -pdbtarg $pdbch2 -ener $fileName.ene -trj $fileName.crd -p1 $alignFile1 -p2 $alignFile2 -o $fileName.log >& $fileName.out
-        self.cmd = [self.binary_path,
-                    # '-i', self.io_dict["in"]["input_config_path"],
-                    '-i', self.output_godmdin_path,
-                    '-pdbin', self.io_dict["in"]["input_pdb_orig_path"],
-                    '-pdbtarg', self.io_dict["in"]["input_pdb_target_path"],
-                    '-p1', self.io_dict["in"]["input_aln_orig_path"],
-                    '-p2', self.io_dict["in"]["input_aln_target_path"],
-                    '-o', self.io_dict["out"]["output_log_path"],
-                    '-ener', self.io_dict["out"]["output_ene_path"],
-                    '-trj', self.io_dict["out"]["output_trj_path"]
+        self.cmd = ['cd', self.stage_io_dict["unique_dir"], ';', self.binary_path,
+                    '-i', "godmd.in",
+                    '-pdbin', PurePath(self.stage_io_dict["in"]["input_pdb_orig_path"]).name,
+                    '-pdbtarg', PurePath(self.stage_io_dict["in"]["input_pdb_target_path"]).name,
+                    '-p1', PurePath(self.stage_io_dict["in"]["input_aln_orig_path"]).name,
+                    '-p2', PurePath(self.stage_io_dict["in"]["input_aln_target_path"]).name,
+                    '-o', PurePath(self.stage_io_dict["out"]["output_log_path"]).name,
+                    '-ener', PurePath(self.stage_io_dict["out"]["output_ene_path"]).name,
+                    '-trj', PurePath(self.stage_io_dict["out"]["output_trj_path"]).name
                     ]
 
         # Run Biobb block
         self.run_biobb()
 
         # Copy outputs from temporary folder to output path
-        shutil.copy2("reference.pdb", PurePath(self.io_dict["out"]["output_pdb_path"]).name)
+        shutil.copy2(str(Path(self.stage_io_dict["unique_dir"]).joinpath("reference.pdb")), PurePath(self.io_dict["out"]["output_pdb_path"]))
 
         # Copy files to host
         self.copy_to_host()
@@ -202,7 +196,6 @@ class GOdMDRun(BiobbObject):
         # remove temporary folder(s)
         self.tmp_files.extend([
             self.stage_io_dict.get("unique_dir"),
-            self.tmp_folder
         ])
         self.remove_tmp_files()
 

@@ -2,7 +2,7 @@
 
 """Module containing the GOdMDPrep class and the command line interface."""
 import argparse
-from pathlib import PurePath
+from pathlib import Path
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.configuration import settings
 from biobb_common.tools import file_utils as fu
@@ -25,6 +25,7 @@ class GOdMDPrep(BiobbObject):
             * **gapopen** (*float*) - (12.0) Standard gap penalty: score taken away when a gap is created.
             * **gapextend** (*float*) - (2.0) Penalty added to the standard gap penalty for each base or residue in the gap.
             * **datafile** (*str*) - ("EPAM250") Scoring matrix file used when comparing sequences.
+            * **binary_path** (*str*) - ("water") Binary path.
             * **remove_tmp** (*bool*) - (True) [WF property] Remove temporal files.
             * **restart** (*bool*) - (False) [WF property] Do not execute if output files exist.
 
@@ -102,9 +103,10 @@ class GOdMDPrep(BiobbObject):
 
         # Properties specific for BB
         self.properties = properties
-        self.gapopen = properties.get('gapopen', "12.0")
-        self.gapextend = properties.get('gapextend', "2.0")
+        self.gapopen = properties.get('gapopen', 12.0)
+        self.gapextend = properties.get('gapextend', 2.0)
         self.datafile = properties.get('datafile', "EPAM250")
+        self.binary_path = properties.get('binary_path', "water")
 
         # Check the properties
         self.check_properties(properties)
@@ -220,7 +222,7 @@ class GOdMDPrep(BiobbObject):
             resid_pairs += [(resids1[idx1], resids2[idx2])]
         # Check contents of the residues of the alignment
         if len(resid_pairs) == 0:  # Alignment file was empty or there was no possible matching residues between the PDBs
-            fu.log('Alignment file was empty or there was no possible matching residues between the PDBs' % self.tmp_folder, self.out_log)
+            fu.log('Alignment file was empty or there was no possible matching residues between the PDBs' % self.stage_io_dict["unique_dir"], self.out_log)
             return False, False
         else:
             return seq_id, resid_pairs
@@ -249,40 +251,36 @@ class GOdMDPrep(BiobbObject):
         seq2, resids2 = self.extract_sequence(pdb2)
 
         if len(seq1) < 50:
-            fu.log('WARNING: Short sequence (ORIGIN)' % self.tmp_folder, self.out_log)
-            # print("short_sequence ORIGIN",len(seq1))
+            fu.log('WARNING: Short sequence (ORIGIN)' % self.stage_io_dict["unique_dir"], self.out_log)
         if len(seq2) < 50:
-            fu.log('WARNING: Short sequence (TARGET)' % self.tmp_folder, self.out_log)
-            # print("short_sequence TARGET",len(seq2))
-
-        # Creating temporary folder
-        self.tmp_folder = fu.create_unique_dir()
-        fu.log('Creating %s temporary folder' % self.tmp_folder, self.out_log)
+            fu.log('WARNING: Short sequence (TARGET)' % self.stage_io_dict["unique_dir"], self.out_log)
 
         # Produce FASTA files
-        fasta1Filename = str(PurePath(self.tmp_folder).joinpath(pdb1 + ".fa"))
+        name1 = "fasta1.fa"
+        name2 = "fasta2.fa"
+        fasta1Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath(name1))
         fasta1File = open(fasta1Filename, "w")
         fasta1File.write(">"+pdb1+"\n"+seq1)
         fasta1File.close()
-        fasta2Filename = str(PurePath(self.tmp_folder).joinpath(pdb2 + ".fa"))
+        fasta2Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath(name2))
         fasta2File = open(fasta2Filename, "w")
         fasta2File.write(">"+pdb2+"\n"+seq2)
         fasta2File.close()
 
-        waterFilename = str(PurePath(self.tmp_folder).joinpath("water_align.out"))
+        waterFilename = str(Path(self.stage_io_dict["unique_dir"]).joinpath("water_align.out"))
 
         # water -auto -outfile=water_align.out -asequence=1ake.chains.nolig.pdb.fa
         # -bsequence=4ake.chains.pdb.fa -gapopen=12 -gapextend=2
         # -datafile=EPAM250 -aformat=markx10
 
         # Command line
-        self.cmd = ["water",
+        self.cmd = [self.binary_path,
                     '-auto',
                     '-outfile', waterFilename,
                     '-asequence', fasta1Filename,
                     '-bsequence', fasta2Filename,
-                    '-gapopen', self.gapopen,
-                    '-gapextend', self.gapextend,
+                    '-gapopen', str(self.gapopen),
+                    '-gapextend', str(self.gapextend),
                     '-datafile', self.datafile,
                     '-aformat', "markx10"
                     ]
@@ -314,8 +312,7 @@ class GOdMDPrep(BiobbObject):
 
         # remove temporary folder(s)
         self.tmp_files.extend([
-            self.stage_io_dict.get("unique_dir"),
-            self.tmp_folder
+            self.stage_io_dict.get("unique_dir")
         ])
         self.remove_tmp_files()
 
