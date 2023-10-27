@@ -14,7 +14,7 @@ setuptools.setup(
     keywords="Bioinformatics Workflows BioExcel Compatibility Ensemble Protein Transitions GOdMD",
     url="https://github.com/bioexcel/biobb_godmd",
     project_urls={
-        "Documentation": "http://biobb_godmd.readthedocs.io/en/latest/",
+        "Documentation": "http://biobb-godmd.readthedocs.io/en/latest/",
         "Bioexcel": "https://bioexcel.eu/"
     },
     packages=setuptools.find_packages(exclude=['docs', 'test']),
