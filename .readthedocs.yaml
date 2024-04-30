@@ -16,6 +16,6 @@ sphinx:
 
 python:
   install:
-    - requirements: biobb_flexserv/docs/requirements.txt
+    - requirements: biobb_godmd/docs/requirements.txt
     - method: pip
       path: .
