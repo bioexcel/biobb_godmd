@@ -123,7 +123,5 @@ jobs:
         with:
           folder: ./reports
       
-      # - name: Restore .bash_profile
-      #   run: cp ~/.bash_profile_orig ~/.bash_profile
 
 
