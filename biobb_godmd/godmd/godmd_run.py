@@ -15,7 +15,7 @@ class GOdMDRun(BiobbObject):
     """
     | biobb_godmd GOdMDRun
     | Wrapper of the `GOdMD tool <http://mmb.irbbarcelona.org/GOdMD/>`_ module.
-    | Computes conformational transition trajectories for proteins using GOdMD tool
+    | Computes conformational transition trajectories for proteins using GOdMD tool.
 
     Args:
         input_pdb_orig_path (str): Input PDB file to be used as origin in the conformational transition. File type: input. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb>`_. Accepted formats: pdb (edam:format_1476).
