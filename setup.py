@@ -18,6 +18,7 @@ setuptools.setup(
         "Bioexcel": "https://bioexcel.eu/"
     },
     packages=setuptools.find_packages(exclude=['docs', 'test']),
+    package_data={'biobb_godmd': ['py.typed']},
     install_requires=['biobb_common==4.2.0'],
     python_requires='>=3.8',
     entry_points={
@@ -26,13 +27,14 @@ setuptools.setup(
             "godmd_run = biobb_godmd.godmd.godmd_run:main"
         ]
     },
-    classifiers=(
-        "Development Status :: 3 - Alpha",
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
-    ),
+        "Operating System :: Unix"
+    ],
 )

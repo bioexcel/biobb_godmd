@@ -96,3 +96,15 @@ com_crashlytics_export_strings.xml
 .LSOverride
 
 *.bk
+
+# MyPy
+.mypy_cache/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Pytest
+.pytest_cache/
