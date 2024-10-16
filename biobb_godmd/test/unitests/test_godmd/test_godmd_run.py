@@ -8,8 +8,8 @@ class TestGOdMDrun():
         fx.test_setup(self, 'godmd_run')
 
     def teardown_class(self):
-        fx.test_teardown(self)
-        # pass
+        # fx.test_teardown(self)
+        pass
 
     def test_godmd_run(self):
         godmd_run(properties=self.properties, **self.paths)
