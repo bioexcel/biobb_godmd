@@ -61,6 +61,7 @@ Config parameters for this building block:
 * **binary_path** (*string*): (discrete) Binary path..
 * **remove_tmp** (*boolean*): (True) Remove temporal files..
 * **restart** (*boolean*): (False) Do not execute if output files exist..
+* **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.yml)
 ```python
@@ -128,6 +129,7 @@ Config parameters for this building block:
 * **binary_path** (*string*): (water) Binary path..
 * **remove_tmp** (*boolean*): (True) Remove temporal files..
 * **restart** (*boolean*): (False) Do not execute if output files exist..
+* **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.yml)
 ```python
