@@ -2,6 +2,7 @@
 
 """Module containing the GOdMDPrep class and the command line interface."""
 import argparse
+from typing import Optional
 from pathlib import Path
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.configuration import settings
@@ -53,9 +54,10 @@ class GOdMDPrep(BiobbObject):
             * schema: http://edamontology.org/EDAM.owl
 
     """
+
     def __init__(self, input_pdb_orig_path: str, input_pdb_target_path: str,
                  output_aln_orig_path: str, output_aln_target_path: str,
-                 properties: dict = None, **kwargs) -> None:
+                 properties: Optional[dict] = None, **kwargs) -> None:
 
         properties = properties or {}
 
@@ -313,7 +315,7 @@ class GOdMDPrep(BiobbObject):
 
         # remove temporary folder(s)
         self.tmp_files.extend([
-            self.stage_io_dict.get("unique_dir")
+            self.stage_io_dict.get("unique_dir", "")
         ])
         self.remove_tmp_files()
 
@@ -324,7 +326,7 @@ class GOdMDPrep(BiobbObject):
 
 def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
                output_aln_orig_path: str, output_aln_target_path: str,
-               properties: dict = None, **kwargs) -> int:
+               properties: Optional[dict] = None, **kwargs) -> int:
     """Create :class:`GOdMDPrep <godmd.godmd_prep.GOdMDPrep>`godmd.godmd_prep.GOdMDPrep class and
     execute :meth:`launch() <godmd.godmd_prep.GOdMDPrep.launch>` method"""
 
