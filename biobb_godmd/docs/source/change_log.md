@@ -1,5 +1,19 @@
 # Biobb GOdMD changelog
 
+## What's new in version [5.0.0](https://github.com/bioexcel/biobb_godmd/releases/tag/v5.0.0)?
+
+### Changes
+
+* [CI/CD](env.yaml): Update biobb_common version.
+* [CI/CD](linting_and_testing.yml): Update set-up micromamba.
+* [Typing](ALL): Update typing from python 3.8 style to python 3.9
+* [CI/CD](linting_and_testing): Update GA test workflow to Python >3.9
+* [TYPING](ALL): Fix typing errors
+* [DOCS](.readthedocs.yaml): Updating to Python 3.9
+* [FEATURE](__init__): Importing submodules when a module is loaded
+* [CI/CD](godmd): Adapting conf.yml to the new confReader
+
+
 ## What's new in version [4.2.0](https://github.com/bioexcel/biobb_godmd/releases/tag/v4.2.0)?
 In version 4.2.0 the dependency biobb_common has been updated to 4.2.0 version.
 

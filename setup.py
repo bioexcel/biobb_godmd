@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="biobb_godmd",
-    version="4.2.0",
+    version="5.0.0",
     author="Biobb developers",
     author_email="adam.hospital@irbbarcelona.org",
     description="Biobb_godmd is a BioBB category for GOdMD tool (protein conformational transitions).",
@@ -15,26 +15,24 @@ setuptools.setup(
     url="https://github.com/bioexcel/biobb_godmd",
     project_urls={
         "Documentation": "http://biobb-godmd.readthedocs.io/en/latest/",
-        "Bioexcel": "https://bioexcel.eu/"
+        "Bioexcel": "https://bioexcel.eu/",
     },
-    packages=setuptools.find_packages(exclude=['docs', 'test']),
-    package_data={'biobb_godmd': ['py.typed']},
-    install_requires=['biobb_common==4.2.0'],
-    python_requires='>=3.8',
+    packages=setuptools.find_packages(exclude=["docs", "test"]),
+    package_data={"biobb_godmd": ["py.typed"]},
+    install_requires=["biobb_common==5.0.0"],
+    python_requires=">=3.9",
     entry_points={
         "console_scripts": [
             "godmd_prep = biobb_godmd.godmd.godmd_prep:main",
-            "godmd_run = biobb_godmd.godmd.godmd_run:main"
+            "godmd_run = biobb_godmd.godmd.godmd_run:main",
         ]
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
-        "Operating System :: Unix"
+        "Operating System :: Unix",
     ],
 )
