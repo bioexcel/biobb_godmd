@@ -211,19 +211,11 @@ class GOdMDRun(BiobbObject):
             config_parameter_key = str(k).strip().upper()
             if config_parameter_key in parameter_keys:
                 godmdin_list[parameter_keys.index(config_parameter_key)] = (
-                    "\t"
-                    + config_parameter_key
-                    + " = "
-                    + str(v)
-                    + " ! BioBB property \n"
+                    "\t" + config_parameter_key + " = " + str(v) + " ! BioBB property \n"
                 )
             else:
                 godmdin_list.append(
-                    "\t"
-                    + config_parameter_key
-                    + " = "
-                    + str(v)
-                    + " ! BioBB property \n"
+                    "\t" + config_parameter_key + " = " + str(v) + " ! BioBB property \n"
                 )
 
         # Writing MD configuration file (mdin)
