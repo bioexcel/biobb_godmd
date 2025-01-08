@@ -1,6 +1,6 @@
 {
     "_id": "biobb_godmd",
-    "desc": "Biobb_godmd is the Biobb module collection to compute protein conformational transitions with the GOdMD method",
+    "desc": "Biobb_godmd is the Biobb module collection to compute protein conformational transitions with the GOdMD method.",
     "github": "https://github.com/bioexcel/biobb_godmd",
     "readthedocs": "https://biobb-godmd.readthedocs.io/en/latest/",
     "conda": "https://anaconda.org/bioconda/biobb_godmd",
