@@ -314,9 +314,9 @@ class GOdMDPrep(BiobbObject):
         self.copy_to_host()
 
         # remove temporary folder(s)
-        self.tmp_files.extend([
-            self.stage_io_dict.get("unique_dir", "")
-        ])
+        # self.tmp_files.extend([
+        #     self.stage_io_dict.get("unique_dir", "")
+        # ])
         self.remove_tmp_files()
 
         self.check_arguments(output_files_created=True, raise_exception=False)
@@ -335,6 +335,8 @@ def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
                      output_aln_orig_path=output_aln_orig_path,
                      output_aln_target_path=output_aln_target_path,
                      properties=properties).launch()
+
+    godmd_prep.__doc__ = GOdMDPrep.__doc__
 
 
 def main():
