@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="biobb_godmd",
-    version="5.0.0",
+    version="5.1.0",
     author="Biobb developers",
     author_email="adam.hospital@irbbarcelona.org",
     description="Biobb_godmd is a BioBB category for GOdMD tool (protein conformational transitions).",
@@ -19,8 +19,8 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(exclude=["docs", "test"]),
     package_data={"biobb_godmd": ["py.typed"]},
-    install_requires=["biobb_common==5.0.0"],
-    python_requires=">=3.9",
+    install_requires=["biobb_common==5.1.0"],
+    python_requires=">=3.9,<3.11",
     entry_points={
         "console_scripts": [
             "godmd_prep = biobb_godmd.godmd.godmd_prep:main",
