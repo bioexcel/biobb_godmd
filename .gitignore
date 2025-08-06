@@ -56,7 +56,8 @@ reports/
 flake8-badge.svg
 .pytest_cache/
 .pytest_cache
-!ref_*.log
+!**/godmd.log
+!**/godmd_ene.out
 .nohup.out
 test/data/temp_results/
 testworkflow/

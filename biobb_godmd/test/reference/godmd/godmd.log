@@ -1,0 +1,49 @@
+ Molecules:    1 Residues:    214 Atoms:     214
+ Molecules:    1 Residues:    214 Atoms:     214
+ NATOM COMMON         214
+ =================================================
+ =                                               =
+ =                    GOdMD                      =
+ =                                               =
+ = P Sfriso, A. Emperador, JL. Gelpi, M.Orozco   =
+ =                                               =
+ =                  (c) 2013                     =
+ =================================================
+
+  I N P U T  F I L E S
+  ====================
+  Settings            : godmd.in
+  Initial PDB         : 1ake_A.pdb
+  Energies            : godmd_ene.out
+  Trajectory (PDB)    : godmd_trj.mdcrd
+  Target PDB          : 4ake_A.pdb
+  Calculation Log     : godmd.log
+  Table of same residu: 1ake_A.aln
+  Table of same residu: 4ake_A.aln
+
+ ------------------------------------------------------------
+ | CALCULATION PARAMETERS                                   |
+ ------------------------------------------------------------
+ | Simulation settings                                      |
+ ------------------------------------------------------------
+ | Simulation Time (ps) (Nbloc x TSnap)       |    5000.000 |
+ | Output structure (fs)             | TSnap  |     500.000 |
+ | Re-scoring target (fs)            | Trect  |     100.000 |
+ | Update velocities (fs)            | Tcorr  |     100.000 |
+ | Update Lists, collision times (fs)| Tact   |       5.000 |
+ | Min. accepted colision time (fs)  | TMin   |  0.00000010 |
+ | Temperature (K)                   | Temp   |       36.08 |
+ ------------------------------------------------------------
+ ------------------------------------------------------------
+ | DIMS                                                     |
+ ------------------------------------------------------------
+ |Acceptance                          |ACCEPTANCE|  0.76999998 |
+ |GO Energy   (kcal)                  |GOENER    |  0.25000000 |
+ |Changing distances well width(A)    |sigmago   |  0.10000000 |
+ |Tolerance between changes(A)        |dtol      |  0.30000001 |
+ |Not-Changing distances well width(A)|wellwidth |  0.13000000 |
+ |Dummy tolerance (A)                 |sigmaFake |  0.02000000 |
+ |Factor scaling NMA coupling         |scalFactor|  0.30000001 |
+ |Cut-off in Radius Gyration        | rgyrPercent|  0.50000000 |
+ |Cut-off not changing GO interact.(A)|rcut1     | 70.00000000 |
+ |Minimum Energy of any well (kcal) | minEnerWell|  0.10000000 |
