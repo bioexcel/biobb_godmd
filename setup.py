@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="biobb_godmd",
-    version="5.1.1",
+    version="5.1.2",
     author="Biobb developers",
     author_email="adam.hospital@irbbarcelona.org",
     description="Biobb_godmd is a BioBB category for GOdMD tool (protein conformational transitions).",
@@ -30,6 +30,9 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",

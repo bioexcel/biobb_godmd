@@ -1,5 +1,11 @@
 # Biobb GOdMD changelog
 
+## What's new in version [5.1.2](https://github.com/bioexcel/biobb_godmd/releases/tag/v5.1.2)?
+
+### Changes
+
+* [UPDATE]: Update to GodMD 1.7
+
 ## What's new in version [5.1.1](https://github.com/bioexcel/biobb_godmd/releases/tag/v5.1.1)?
 
 ### Changes
