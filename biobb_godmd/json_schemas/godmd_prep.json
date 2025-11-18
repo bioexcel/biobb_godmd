@@ -26,7 +26,7 @@
             "type": "string",
             "description": "Input PDB file to be used as origin in the conformational transition",
             "filetype": "input",
-            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.pdb",
             "enum": [
                 ".*\\.pdb$"
             ],
@@ -42,7 +42,7 @@
             "type": "string",
             "description": "Input PDB file to be used as target in the conformational transition",
             "filetype": "input",
-            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.pdb",
             "enum": [
                 ".*\\.pdb$"
             ],
@@ -58,7 +58,7 @@
             "type": "string",
             "description": "Output GOdMD alignment file corresponding to the origin structure of the conformational transition",
             "filetype": "output",
-            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.aln",
             "enum": [
                 ".*\\.aln$",
                 ".*\\.txt$"
@@ -80,7 +80,7 @@
             "type": "string",
             "description": "Output GOdMD alignment file corresponding to the target structure of the conformational transition",
             "filetype": "output",
-            "sample": "https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln",
+            "sample": "https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.aln",
             "enum": [
                 ".*\\.aln$",
                 ".*\\.txt$"

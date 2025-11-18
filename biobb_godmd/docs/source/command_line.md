@@ -34,10 +34,10 @@ godmd_prep -h
 Syntax: input_argument (datatype) : Definition
 
 Config input / output arguments for this building block:
-* **input_pdb_orig_path** (*string*): Input PDB file to be used as origin in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb). Accepted formats: PDB
-* **input_pdb_target_path** (*string*): Input PDB file to be used as target in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb). Accepted formats: PDB
-* **output_aln_orig_path** (*string*): Output GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln). Accepted formats: ALN, TXT
-* **output_aln_target_path** (*string*): Output GOdMD alignment file corresponding to the target structure of the conformational transition. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln). Accepted formats: ALN, TXT
+* **input_pdb_orig_path** (*string*): Input PDB file to be used as origin in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.pdb). Accepted formats: PDB
+* **input_pdb_target_path** (*string*): Input PDB file to be used as target in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.pdb). Accepted formats: PDB
+* **output_aln_orig_path** (*string*): Output GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.aln). Accepted formats: ALN, TXT
+* **output_aln_target_path** (*string*): Output GOdMD alignment file corresponding to the target structure of the conformational transition. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.aln). Accepted formats: ALN, TXT
 ### Config
 Syntax: input_parameter (datatype) - (default_value) Definition
 
@@ -50,7 +50,7 @@ Config parameters for this building block:
 * **restart** (*boolean*): (False) Do not execute if output files exist..
 * **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.yml)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_prep.yml)
 ```python
 properties:
   gapextend: '2'
@@ -62,7 +62,7 @@ properties:
 godmd_prep --config config_godmd_prep.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --output_aln_orig_path 1ake_A.aln --output_aln_target_path 4ake_A.aln
 ```
 ### JSON
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.json)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_prep.json)
 ```python
 {
   "properties": {
@@ -114,15 +114,15 @@ godmd_run -h
 Syntax: input_argument (datatype) : Definition
 
 Config input / output arguments for this building block:
-* **input_pdb_orig_path** (*string*): Input PDB file to be used as origin in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb). Accepted formats: PDB
-* **input_pdb_target_path** (*string*): Input PDB file to be used as target in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb). Accepted formats: PDB
-* **input_aln_orig_path** (*string*): Input GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln). Accepted formats: ALN, TXT
-* **input_aln_target_path** (*string*): Input GOdMD alignment file corresponding to the target structure of the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln). Accepted formats: ALN, TXT
-* **input_config_path** (*string*): Input GOdMD configuration file. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/params.in). Accepted formats: IN, TXT
-* **output_log_path** (*string*): Output log file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd.log). Accepted formats: LOG, OUT, TXT, O
-* **output_ene_path** (*string*): Output energy file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_ene.out). Accepted formats: LOG, OUT, TXT, O
-* **output_trj_path** (*string*): Output trajectory file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd). Accepted formats: TRJ, CRD, MDCRD, X
-* **output_pdb_path** (*string*): Output structure file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/reference/godmd/godmd_pdb.pdb). Accepted formats: PDB
+* **input_pdb_orig_path** (*string*): Input PDB file to be used as origin in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.pdb). Accepted formats: PDB
+* **input_pdb_target_path** (*string*): Input PDB file to be used as target in the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.pdb). Accepted formats: PDB
+* **input_aln_orig_path** (*string*): Input GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.aln). Accepted formats: ALN, TXT
+* **input_aln_target_path** (*string*): Input GOdMD alignment file corresponding to the target structure of the conformational transition. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.aln). Accepted formats: ALN, TXT
+* **input_config_path** (*string*): Input GOdMD configuration file. File type: input. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/params.in). Accepted formats: IN, TXT
+* **output_log_path** (*string*): Output log file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/reference/godmd/godmd.log). Accepted formats: LOG, OUT, TXT, O
+* **output_ene_path** (*string*): Output energy file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/reference/godmd/godmd_ene.out). Accepted formats: LOG, OUT, TXT, O
+* **output_trj_path** (*string*): Output trajectory file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/reference/godmd/godmd_trj.mdcrd). Accepted formats: TRJ, CRD, MDCRD, X
+* **output_pdb_path** (*string*): Output structure file. File type: output. [Sample file](https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/reference/godmd/godmd_pdb.pdb). Accepted formats: PDB
 ### Config
 Syntax: input_parameter (datatype) - (default_value) Definition
 
@@ -133,7 +133,7 @@ Config parameters for this building block:
 * **restart** (*boolean*): (False) Do not execute if output files exist..
 * **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.yml)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_run.yml)
 ```python
 properties:
   remove_tmp: true
@@ -144,7 +144,7 @@ properties:
 godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd --output_pdb_path godmd_pdb.pdb
 ```
 ### JSON
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.json)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_run.json)
 ```python
 {
   "properties": {

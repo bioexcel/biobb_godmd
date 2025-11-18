@@ -18,10 +18,10 @@ class GOdMDPrep(BiobbObject):
     | Prepares input files for the GOdMD tool.
 
     Args:
-        input_pdb_orig_path (str): Input PDB file to be used as origin in the conformational transition. File type: input. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.pdb>`_. Accepted formats: pdb (edam:format_1476).
-        input_pdb_target_path (str): Input PDB file to be used as target in the conformational transition. File type: input. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.pdb>`_. Accepted formats: pdb (edam:format_1476).
-        output_aln_orig_path (str): Output GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/1ake_A.aln>`_. Accepted formats: aln (edam:format_2330), txt (edam:format_2330).
-        output_aln_target_path (str): Output GOdMD alignment file corresponding to the target structure of the conformational transition. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/master/biobb_godmd/test/data/godmd/4ake_A.aln>`_. Accepted formats: aln (edam:format_2330), txt (edam:format_2330).
+        input_pdb_orig_path (str): Input PDB file to be used as origin in the conformational transition. File type: input. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.pdb>`_. Accepted formats: pdb (edam:format_1476).
+        input_pdb_target_path (str): Input PDB file to be used as target in the conformational transition. File type: input. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.pdb>`_. Accepted formats: pdb (edam:format_1476).
+        output_aln_orig_path (str): Output GOdMD alignment file corresponding to the origin structure of the conformational transition. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/1ake_A.aln>`_. Accepted formats: aln (edam:format_2330), txt (edam:format_2330).
+        output_aln_target_path (str): Output GOdMD alignment file corresponding to the target structure of the conformational transition. File type: output. `Sample file <https://github.com/bioexcel/biobb_godmd/raw/main/biobb_godmd/test/data/godmd/4ake_A.aln>`_. Accepted formats: aln (edam:format_2330), txt (edam:format_2330).
         properties (dict - Python dictionary object containing the tool parameters, not input/output files):
             * **gapopen** (*float*) - (12.0) Standard gap penalty: score taken away when a gap is created.
             * **gapextend** (*float*) - (2.0) Penalty added to the standard gap penalty for each base or residue in the gap.
