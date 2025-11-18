@@ -7,7 +7,7 @@
     "docker": "https://quay.io/biocontainers/biobb_godmd:5.1.2--pyhdfd78af_0",
     "singularity": "https://depot.galaxyproject.org/singularity/biobb_godmd:5.1.2--pyhdfd78af_0",
     "version": "5.1.2",
-    "rest": false,
+    "rest": true,
     "tools": [
         {
             "block": "GoDMD_prep",
@@ -15,7 +15,7 @@
             "desc": "Helper BioBB to prepare inputs for the GOdMD tool (protein conformational transitions).",
             "exec": "godmd_prep",
             "docs": "https://biobb-godmd.readthedocs.io/en/latest/godmd.html#module-godmd.godmd_prep",
-            "rest": false
+            "rest": true
         },
         {
             "block": "GoDMD_run",
@@ -23,7 +23,7 @@
             "desc": "Wrapper of the GOdMD tool to compute protein conformational transitions.",
             "exec": "godmd_run",
             "docs": "https://biobb-godmd.readthedocs.io/en/latest/godmd.html#module-godmd.godmd_run",
-            "rest": false
+            "rest": true
         }
     ],
     "dep_pypi": [
