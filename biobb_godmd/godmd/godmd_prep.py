@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
 """Module containing the GOdMDPrep class and the command line interface."""
-import argparse
 from typing import Optional
 from pathlib import Path
 from biobb_common.generic.biobb_object import BiobbObject
-from biobb_common.configuration import settings
 from biobb_common.tools import file_utils as fu
 from biobb_common.tools.file_utils import launchlogger
 from biobb_godmd.godmd.common import check_input_path, check_output_path
@@ -326,41 +324,11 @@ def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
                properties: Optional[dict] = None, **kwargs) -> int:
     """Create :class:`GOdMDPrep <godmd.godmd_prep.GOdMDPrep>`godmd.godmd_prep.GOdMDPrep class and
     execute :meth:`launch() <godmd.godmd_prep.GOdMDPrep.launch>` method"""
-
-    return GOdMDPrep(input_pdb_orig_path=input_pdb_orig_path,
-                     input_pdb_target_path=input_pdb_target_path,
-                     output_aln_orig_path=output_aln_orig_path,
-                     output_aln_target_path=output_aln_target_path,
-                     properties=properties).launch()
+    return GOdMDPrep(**dict(locals())).launch()
 
 
 godmd_prep.__doc__ = GOdMDPrep.__doc__
-
-
-def main():
-    parser = argparse.ArgumentParser(description='Prepares input files for the GOdMD tool.', formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999))
-    parser.add_argument('--config', required=False, help='Configuration file')
-
-    # Specific args
-    required_args = parser.add_argument_group('required arguments')
-    required_args.add_argument('--input_pdb_orig_path', required=True, help='Input PDB file to be used as origin in the conformational transition. Accepted formats: pdb.')
-    required_args.add_argument('--input_pdb_target_path', required=True, help='Input PDB file to be used as target in the conformational transition. Accepted formats: pdb.')
-    required_args.add_argument('--output_aln_orig_path', required=True, help='Output GOdMD alignment file corresponding to the origin structure of the conformational transition. Accepted formats: aln, txt.')
-    required_args.add_argument('--output_aln_target_path', required=True, help='Output GOdMD alignment file corresponding to the target structure of the conformational transition. Accepted formats: aln, txt.')
-
-    args = parser.parse_args()
-    # config = args.config if args.config else None
-    args.config = args.config or "{}"
-    # properties = settings.ConfReader(config=config).get_prop_dic()
-    properties = settings.ConfReader(config=args.config).get_prop_dic()
-
-    # Specific call
-    godmd_prep(input_pdb_orig_path=args.input_pdb_orig_path,
-               input_pdb_target_path=args.input_pdb_target_path,
-               output_aln_orig_path=args.output_aln_orig_path,
-               output_aln_target_path=args.output_aln_target_path,
-               properties=properties)
-
+main = GOdMDPrep.get_main(godmd_prep, "Prepares input files for the GOdMD tool.")
 
 if __name__ == '__main__':
     main()

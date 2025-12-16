@@ -13,13 +13,14 @@ Command:
 ```python
 godmd_prep -h
 ```
-    usage: godmd_prep [-h] [--config CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --output_aln_orig_path OUTPUT_ALN_ORIG_PATH --output_aln_target_path OUTPUT_ALN_TARGET_PATH
+    usage: godmd_prep [-h] [-c CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --output_aln_orig_path OUTPUT_ALN_ORIG_PATH --output_aln_target_path OUTPUT_ALN_TARGET_PATH
     
     Prepares input files for the GOdMD tool.
     
     options:
       -h, --help            show this help message and exit
-      --config CONFIG       Configuration file
+      -c CONFIG, --config CONFIG
+                            This file can be a YAML file, JSON file or JSON string
     
     required arguments:
       --input_pdb_orig_path INPUT_PDB_ORIG_PATH
@@ -50,7 +51,7 @@ Config parameters for this building block:
 * **restart** (*boolean*): (False) Do not execute if output files exist..
 * **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_prep.yml)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.yml)
 ```python
 properties:
   gapextend: '2'
@@ -62,7 +63,7 @@ properties:
 godmd_prep --config config_godmd_prep.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --output_aln_orig_path 1ake_A.aln --output_aln_target_path 4ake_A.aln
 ```
 ### JSON
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_prep.json)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.json)
 ```python
 {
   "properties": {
@@ -83,13 +84,14 @@ Command:
 ```python
 godmd_run -h
 ```
-    usage: godmd_run [-h] [--config CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --input_aln_orig_path INPUT_ALN_ORIG_PATH --input_aln_target_path INPUT_ALN_TARGET_PATH [--input_config_path INPUT_CONFIG_PATH] --output_log_path OUTPUT_LOG_PATH --output_ene_path OUTPUT_ENE_PATH --output_trj_path OUTPUT_TRJ_PATH --output_pdb_path OUTPUT_PDB_PATH
+    usage: godmd_run [-h] [-c CONFIG] --input_pdb_orig_path INPUT_PDB_ORIG_PATH --input_pdb_target_path INPUT_PDB_TARGET_PATH --input_aln_orig_path INPUT_ALN_ORIG_PATH --input_aln_target_path INPUT_ALN_TARGET_PATH [--input_config_path INPUT_CONFIG_PATH] --output_log_path OUTPUT_LOG_PATH --output_ene_path OUTPUT_ENE_PATH --output_trj_path OUTPUT_TRJ_PATH --output_pdb_path OUTPUT_PDB_PATH
     
     Computing conformational transition trajectories for proteins using GOdMD tool.
     
     options:
       -h, --help            show this help message and exit
-      --config CONFIG       Configuration file
+      -c CONFIG, --config CONFIG
+                            This file can be a YAML file, JSON file or JSON string
     
     required arguments:
       --input_pdb_orig_path INPUT_PDB_ORIG_PATH
@@ -100,16 +102,18 @@ godmd_run -h
                             Input GOdMD alignment file corresponding to the origin structure of the conformational transition. Accepted formats: aln, txt.
       --input_aln_target_path INPUT_ALN_TARGET_PATH
                             Input GOdMD alignment file corresponding to the target structure of the conformational transition. Accepted formats: aln, txt.
-      --input_config_path INPUT_CONFIG_PATH
-                            Input configuration file (GOdMD run options). Accepted formats: in, txt.
       --output_log_path OUTPUT_LOG_PATH
-                            Output log file. Accepted formats: log, out, txt.
+                            Output log file. Accepted formats: log, out, txt, o.
       --output_ene_path OUTPUT_ENE_PATH
-                            Output energy file. Accepted formats: log, out, txt.
+                            Output energy file. Accepted formats: log, out, txt, o.
       --output_trj_path OUTPUT_TRJ_PATH
-                            Output trajectory file. Accepted formats: mdcrd.
+                            Output trajectory file. Accepted formats: trj, crd, mdcrd, x.
       --output_pdb_path OUTPUT_PDB_PATH
                             Output structure file. Accepted formats: pdb.
+    
+    optional arguments:
+      --input_config_path INPUT_CONFIG_PATH
+                            Input GOdMD configuration file. Accepted formats: in, txt.
 ### I / O Arguments
 Syntax: input_argument (datatype) : Definition
 
@@ -133,7 +137,7 @@ Config parameters for this building block:
 * **restart** (*boolean*): (False) Do not execute if output files exist..
 * **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
 ### YAML
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_run.yml)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.yml)
 ```python
 properties:
   remove_tmp: true
@@ -144,7 +148,7 @@ properties:
 godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input_pdb_target_path 4ake_A.pdb --input_aln_orig_path 1ake_A.aln --input_aln_target_path 4ake_A.aln --input_config_path params.in --output_log_path godmd.log --output_ene_path godmd_ene.out --output_trj_path godmd_trj.mdcrd --output_pdb_path godmd_pdb.pdb
 ```
 ### JSON
-#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/main/biobb_godmd/test/data/config/config_godmd_run.json)
+#### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.json)
 ```python
 {
   "properties": {

@@ -2,12 +2,10 @@
 
 """Module containing the GOdMDRun class and the command line interface."""
 
-import argparse
 import shutil
 from pathlib import Path, PurePath
 from typing import Optional
 
-from biobb_common.configuration import settings
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.tools.file_utils import launchlogger
 
@@ -312,99 +310,11 @@ def godmd_run(
 ) -> int:
     """Create :class:`GOdMDRun <godmd.godmd_run.GOdMDRun>`godmd.godmd_run.GOdMDRun class and
     execute :meth:`launch() <godmd.godmd_run.GOdMDRun.launch>` method"""
-
-    return GOdMDRun(
-        input_pdb_orig_path=input_pdb_orig_path,
-        input_pdb_target_path=input_pdb_target_path,
-        input_aln_orig_path=input_aln_orig_path,
-        input_aln_target_path=input_aln_target_path,
-        input_config_path=input_config_path,
-        output_log_path=output_log_path,
-        output_ene_path=output_ene_path,
-        output_trj_path=output_trj_path,
-        output_pdb_path=output_pdb_path,
-        properties=properties,
-    ).launch()
+    return GOdMDRun(**dict(locals())).launch()
 
 
 godmd_run.__doc__ = GOdMDRun.__doc__
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Computing conformational transition trajectories for proteins using GOdMD tool.",
-        formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999),
-    )
-    parser.add_argument("--config", required=False, help="Configuration file")
-
-    # Specific args
-    required_args = parser.add_argument_group("required arguments")
-    required_args.add_argument(
-        "--input_pdb_orig_path",
-        required=True,
-        help="Input PDB file to be used as origin in the conformational transition. Accepted formats: pdb.",
-    )
-    required_args.add_argument(
-        "--input_pdb_target_path",
-        required=True,
-        help="Input PDB file to be used as target in the conformational transition. Accepted formats: pdb.",
-    )
-    required_args.add_argument(
-        "--input_aln_orig_path",
-        required=True,
-        help="Input GOdMD alignment file corresponding to the origin structure of the conformational transition. Accepted formats: aln, txt.",
-    )
-    required_args.add_argument(
-        "--input_aln_target_path",
-        required=True,
-        help="Input GOdMD alignment file corresponding to the target structure of the conformational transition. Accepted formats: aln, txt.",
-    )
-    required_args.add_argument(
-        "--input_config_path",
-        required=False,
-        help="Input configuration file (GOdMD run options). Accepted formats: in, txt.",
-    )
-    required_args.add_argument(
-        "--output_log_path",
-        required=True,
-        help="Output log file. Accepted formats: log, out, txt.",
-    )
-    required_args.add_argument(
-        "--output_ene_path",
-        required=True,
-        help="Output energy file. Accepted formats: log, out, txt.",
-    )
-    required_args.add_argument(
-        "--output_trj_path",
-        required=True,
-        help="Output trajectory file. Accepted formats: mdcrd.",
-    )
-    required_args.add_argument(
-        "--output_pdb_path",
-        required=True,
-        help="Output structure file. Accepted formats: pdb.",
-    )
-
-    args = parser.parse_args()
-    # config = args.config if args.config else None
-    args.config = args.config or "{}"
-    # properties = settings.ConfReader(config=config).get_prop_dic()
-    properties = settings.ConfReader(config=args.config).get_prop_dic()
-
-    # Specific call
-    godmd_run(
-        input_pdb_orig_path=args.input_pdb_orig_path,
-        input_pdb_target_path=args.input_pdb_target_path,
-        input_aln_orig_path=args.input_aln_orig_path,
-        input_aln_target_path=args.input_aln_target_path,
-        input_config_path=args.input_config_path,
-        output_log_path=args.output_log_path,
-        output_ene_path=args.output_ene_path,
-        output_trj_path=args.output_trj_path,
-        output_pdb_path=args.output_pdb_path,
-        properties=properties,
-    )
-
+main = GOdMDRun.get_main(godmd_run, "Computing conformational transition trajectories for proteins using GOdMD tool.")
 
 if __name__ == "__main__":
     main()
