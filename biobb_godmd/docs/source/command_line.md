@@ -43,13 +43,13 @@ Config input / output arguments for this building block:
 Syntax: input_parameter (datatype) - (default_value) Definition
 
 Config parameters for this building block:
-* **gapopen** (*number*): (12.0) Standard gap penalty: score taken away when a gap is created..
-* **gapextend** (*number*): (2.0) Penalty added to the standard gap penalty for each base or residue in the gap..
-* **datafile** (*string*): (EPAM250) Scoring matrix file used when comparing sequences..
-* **binary_path** (*string*): (water) Binary path..
-* **remove_tmp** (*boolean*): (True) Remove temporal files..
-* **restart** (*boolean*): (False) Do not execute if output files exist..
-* **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
+* **gapopen** (*number*): (12.0) Standard gap penalty: score taken away when a gap is created.
+* **gapextend** (*number*): (2.0) Penalty added to the standard gap penalty for each base or residue in the gap.
+* **datafile** (*string*): (EPAM250) Scoring matrix file used when comparing sequences.
+* **binary_path** (*string*): (water) Binary path.
+* **remove_tmp** (*boolean*): (True) Remove temporal files.
+* **restart** (*boolean*): (False) Do not execute if output files exist.
+* **sandbox_path** (*string*): (./) Parent path to the sandbox directory.
 ### YAML
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_prep.yml)
 ```python
@@ -131,11 +131,11 @@ Config input / output arguments for this building block:
 Syntax: input_parameter (datatype) - (default_value) Definition
 
 Config parameters for this building block:
-* **godmdin** (*object*): ({}) GOdMD options specification..
-* **binary_path** (*string*): (discrete) Binary path..
-* **remove_tmp** (*boolean*): (True) Remove temporal files..
-* **restart** (*boolean*): (False) Do not execute if output files exist..
-* **sandbox_path** (*string*): (./) Parent path to the sandbox directory..
+* **godmdin** (*object*): ({}) GOdMD options specification.
+* **binary_path** (*string*): (discrete) Binary path.
+* **remove_tmp** (*boolean*): (True) Remove temporal files.
+* **restart** (*boolean*): (False) Do not execute if output files exist.
+* **sandbox_path** (*string*): (./) Parent path to the sandbox directory.
 ### YAML
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.yml)
 ```python
