@@ -32,3 +32,43 @@ godmd_run:
     ref_output_pdb_path: file:test_reference_dir/godmd/godmd_pdb.pdb
   properties:
     remove_tmp: True
+
+godmd_run_docker:
+  paths:
+    input_pdb_orig_path: file:test_data_dir/godmd/1ake_A.pdb
+    input_pdb_target_path: file:test_data_dir/godmd/4ake_A.pdb
+    input_aln_orig_path: file:test_data_dir/godmd/1ake_A.aln
+    input_aln_target_path: file:test_data_dir/godmd/4ake_A.aln
+    input_config_path: file:test_data_dir/godmd/params.in
+    output_log_path: godmd.log
+    ref_output_log_path: file:test_reference_dir/godmd/godmd.log
+    output_ene_path: godmd_ene.out
+    ref_output_ene_path: file:test_reference_dir/godmd/godmd_ene.out
+    output_trj_path: godmd_trj.mdcrd
+    ref_output_trj_path: file:test_reference_dir/godmd/godmd_trj.mdcrd
+    output_pdb_path: godmd_pdb.pdb
+    ref_output_pdb_path: file:test_reference_dir/godmd/godmd_pdb.pdb
+  properties:
+    remove_tmp: True
+    container_path: docker
+    container_image: quay.io/biocontainers/biobb_godmd:5.2.1--pyhdfd78af_0
+
+godmd_run_singularity:
+  paths:
+    input_pdb_orig_path: file:test_data_dir/godmd/1ake_A.pdb
+    input_pdb_target_path: file:test_data_dir/godmd/4ake_A.pdb
+    input_aln_orig_path: file:test_data_dir/godmd/1ake_A.aln
+    input_aln_target_path: file:test_data_dir/godmd/4ake_A.aln
+    input_config_path: file:test_data_dir/godmd/params.in
+    output_log_path: godmd.log
+    ref_output_log_path: file:test_reference_dir/godmd/godmd.log
+    output_ene_path: godmd_ene.out
+    ref_output_ene_path: file:test_reference_dir/godmd/godmd_ene.out
+    output_trj_path: godmd_trj.mdcrd
+    ref_output_trj_path: file:test_reference_dir/godmd/godmd_trj.mdcrd
+    output_pdb_path: godmd_pdb.pdb
+    ref_output_pdb_path: file:test_reference_dir/godmd/godmd_pdb.pdb
+  properties:
+    remove_tmp: True
+    container_path: singularity
+    container_image: https://depot.galaxyproject.org/singularity/biobb_godmd:5.2.1--pyhdfd78af_0

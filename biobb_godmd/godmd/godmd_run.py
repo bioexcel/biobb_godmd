@@ -34,6 +34,12 @@ class GOdMDRun(BiobbObject):
             * **remove_tmp** (*bool*) - (True) [WF property] Remove temporal files.
             * **restart** (*bool*) - (False) [WF property] Do not execute if output files exist.
             * **sandbox_path** (*str*) - ("./") [WF property] Parent path to the sandbox directory.
+            * **container_path** (*str*) - (None) Container path definition.
+            * **container_image** (*str*) - ('afandiadib/ambertools:serial') Container image definition.
+            * **container_volume_path** (*str*) - ('/tmp') Container volume path definition.
+            * **container_working_dir** (*str*) - (None) Container working directory definition.
+            * **container_user_id** (*str*) - (None) Container user_id definition.
+            * **container_shell_path** (*str*) - ('/bin/bash') Path to default shell inside the container.
 
     Examples:
         This is a use example of how to use the building block from Python::
@@ -245,6 +251,11 @@ class GOdMDRun(BiobbObject):
             return 0
         self.stage_files()
 
+        if self.container_path:
+            working_dir = self.container_volume_path if self.container_volume_path else "/data"
+        else:
+            working_dir = self.stage_io_dict.get("unique_dir", "")
+
         # Creating GOdMD input file
         self.output_godmdin_path = self.create_godmdin(
             path=str(Path(self.stage_io_dict["unique_dir"]).joinpath("godmd.in"))
@@ -254,11 +265,11 @@ class GOdMDRun(BiobbObject):
         # discrete -i $fileName.in -pdbin $pdbch1 -pdbtarg $pdbch2 -ener $fileName.ene -trj $fileName.crd -p1 $alignFile1 -p2 $alignFile2 -o $fileName.log >& $fileName.out
         self.cmd = [
             "cd",
-            self.stage_io_dict["unique_dir"],
+            working_dir,
             ";",
             self.binary_path,
             "-i",
-            "godmd.in",
+            PurePath(self.output_godmdin_path).name,
             "-pdbin",
             PurePath(self.stage_io_dict["in"]["input_pdb_orig_path"]).name,
             "-pdbtarg",
@@ -278,11 +289,12 @@ class GOdMDRun(BiobbObject):
         # Run Biobb block
         self.run_biobb()
 
-        # Copy outputs from temporary folder to output path
-        shutil.copy2(
-            str(Path(self.stage_io_dict["unique_dir"]).joinpath("reference.pdb")),
-            PurePath(self.io_dict["out"]["output_pdb_path"]),
+        # Stage the fixed-name output file so copy_to_host can remap it correctly.
+        generated_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath("reference.pdb")
+        staged_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath(
+            Path(self.stage_io_dict["out"]["output_pdb_path"]).name
         )
+        shutil.copy2(str(generated_output), str(staged_output))
 
         # Copy files to host
         self.copy_to_host()
