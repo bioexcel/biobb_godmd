@@ -1,0 +1,7 @@
+{
+  "properties": {
+    "remove_tmp": true,
+    "container_path": "singularity",
+    "container_image": "https://depot.galaxyproject.org/singularity/biobb_godmd:5.2.1--pyhdfd78af_0"
+  }
+}

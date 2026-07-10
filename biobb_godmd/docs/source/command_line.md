@@ -136,10 +136,32 @@ Config parameters for this building block:
 * **remove_tmp** (*boolean*): (True) Remove temporal files.
 * **restart** (*boolean*): (False) Do not execute if output files exist.
 * **sandbox_path** (*string*): (./) Parent path to the sandbox directory.
+* **container_path** (*string*): (None) Container path definition.
+* **container_image** (*string*): (afandiadib/ambertools:serial) Container image definition.
+* **container_volume_path** (*string*): (/tmp) Container volume path definition.
+* **container_working_dir** (*string*): (None) Container working directory definition.
+* **container_user_id** (*string*): (None) Container user_id definition.
+* **container_shell_path** (*string*): (/bin/bash) Path to default shell inside the container.
 ### YAML
 #### [Common config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run.yml)
 ```python
 properties:
+  remove_tmp: true
+
+```
+#### [Docker config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run_docker.yml)
+```python
+properties:
+  container_image: quay.io/biocontainers/biobb_godmd:5.2.1--pyhdfd78af_0
+  container_path: docker
+  remove_tmp: true
+
+```
+#### [Singularity config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run_singularity.yml)
+```python
+properties:
+  container_image: https://depot.galaxyproject.org/singularity/biobb_godmd:5.2.1--pyhdfd78af_0
+  container_path: singularity
   remove_tmp: true
 
 ```
@@ -153,6 +175,26 @@ godmd_run --config config_godmd_run.yml --input_pdb_orig_path 1ake_A.pdb --input
 {
   "properties": {
     "remove_tmp": true
+  }
+}
+```
+#### [Docker config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run_docker.json)
+```python
+{
+  "properties": {
+    "remove_tmp": true,
+    "container_path": "docker",
+    "container_image": "quay.io/biocontainers/biobb_godmd:5.2.1--pyhdfd78af_0"
+  }
+}
+```
+#### [Singularity config file](https://github.com/bioexcel/biobb_godmd/blob/master/biobb_godmd/test/data/config/config_godmd_run_singularity.json)
+```python
+{
+  "properties": {
+    "remove_tmp": true,
+    "container_path": "singularity",
+    "container_image": "https://depot.galaxyproject.org/singularity/biobb_godmd:5.2.1--pyhdfd78af_0"
   }
 }
 ```

@@ -1,0 +1,4 @@
+properties:
+  container_image: quay.io/biocontainers/biobb_godmd:5.2.1--pyhdfd78af_0
+  container_path: docker
+  remove_tmp: true
