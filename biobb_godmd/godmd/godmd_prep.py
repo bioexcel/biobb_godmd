@@ -5,8 +5,6 @@ from typing import Optional
 from pathlib import Path, PurePath
 from biobb_common.generic.biobb_object import BiobbObject
 from biobb_common.tools import file_utils as fu
-from biobb_common.tools.file_utils import launchlogger
-from biobb_godmd.godmd.common import check_input_path, check_output_path
 
 
 class GOdMDPrep(BiobbObject):
@@ -108,21 +106,6 @@ class GOdMDPrep(BiobbObject):
         self.gapextend = properties.get('gapextend', 2.0)
         self.datafile = properties.get('datafile', "EPAM250")
         self.binary_path = properties.get('binary_path', "water")
-
-        # Check the properties
-        self.check_properties(properties)
-        self.check_arguments()
-
-    def check_data_params(self, out_log, out_err):
-        """ Checks input/output paths correctness """
-
-        # Check input(s)
-        self.io_dict["in"]["input_pdb_orig_path"] = check_input_path(self.io_dict["in"]["input_pdb_orig_path"], "input_pdb_orig_path", False, out_log, self.__class__.__name__)
-        self.io_dict["in"]["input_pdb_target_path"] = check_input_path(self.io_dict["in"]["input_pdb_target_path"], "input_pdb_target_path", False, out_log, self.__class__.__name__)
-
-        # Check output(s)
-        self.io_dict["out"]["output_aln_orig_path"] = check_output_path(self.io_dict["out"]["output_aln_orig_path"], "output_aln_orig_path", False, out_log, self.__class__.__name__)
-        self.io_dict["out"]["output_aln_target_path"] = check_output_path(self.io_dict["out"]["output_aln_target_path"], "output_aln_target_path", False, out_log, self.__class__.__name__)
 
     def extract_sequence(self, pdb):
         '''
@@ -228,17 +211,8 @@ class GOdMDPrep(BiobbObject):
         else:
             return seq_id, resid_pairs
 
-    @launchlogger
-    def launch(self):
+    def run(self):
         """Launches the execution of the GOdMDPrep module."""
-
-        # check input/output paths and parameters
-        self.check_data_params(self.out_log, self.err_log)
-
-        # Setup Biobb
-        if self.check_restart():
-            return 0
-        self.stage_files()
 
         # Starting the work...
         # Parsing the input PDB files

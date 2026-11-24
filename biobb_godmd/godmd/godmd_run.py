@@ -7,9 +7,6 @@ from pathlib import Path, PurePath
 from typing import Optional
 
 from biobb_common.generic.biobb_object import BiobbObject
-from biobb_common.tools.file_utils import launchlogger
-
-from biobb_godmd.godmd.common import check_input_path, check_output_path
 
 
 class GOdMDRun(BiobbObject):
@@ -111,79 +108,7 @@ class GOdMDRun(BiobbObject):
         self.godmdin = {k: str(v) for k, v in properties.get("godmdin", dict()).items()}
         self.binary_path = properties.get("binary_path", "discrete")
 
-        # Check the properties
-        self.check_properties(properties)
         # self.check_arguments()
-
-    def check_data_params(self, out_log, out_err):
-        """Checks input/output paths correctness"""
-
-        # Check input(s)
-        self.io_dict["in"]["input_pdb_orig_path"] = check_input_path(
-            self.io_dict["in"]["input_pdb_orig_path"],
-            "input_pdb_orig_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_pdb_target_path"] = check_input_path(
-            self.io_dict["in"]["input_pdb_target_path"],
-            "input_pdb_target_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_aln_orig_path"] = check_input_path(
-            self.io_dict["in"]["input_aln_orig_path"],
-            "input_aln_orig_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_aln_target_path"] = check_input_path(
-            self.io_dict["in"]["input_aln_target_path"],
-            "input_aln_target_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_config_path"] = check_input_path(
-            self.io_dict["in"]["input_config_path"],
-            "input_config_path",
-            True,
-            out_log,
-            self.__class__.__name__,
-        )
-
-        # Check output(s)
-        self.io_dict["out"]["output_log_path"] = check_output_path(
-            self.io_dict["out"]["output_log_path"],
-            "output_log_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_ene_path"] = check_output_path(
-            self.io_dict["out"]["output_ene_path"],
-            "output_ene_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_trj_path"] = check_output_path(
-            self.io_dict["out"]["output_trj_path"],
-            "output_trj_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_pdb_path"] = check_output_path(
-            self.io_dict["out"]["output_pdb_path"],
-            "output_pdb_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
 
     def create_godmdin(self, path: Optional[str] = None) -> str:
         """Creates a GOdMD configuration file (godmdin) using the properties file settings"""
@@ -239,17 +164,8 @@ class GOdMDRun(BiobbObject):
 
         return str(self.output_godmdin_path)
 
-    @launchlogger
-    def launch(self):
+    def run(self):
         """Launches the execution of the GOdMDRun module."""
-
-        # check input/output paths and parameters
-        self.check_data_params(self.out_log, self.err_log)
-
-        # Setup Biobb
-        if self.check_restart():
-            return 0
-        self.stage_files()
 
         if self.container_path:
             working_dir = self.container_volume_path if self.container_volume_path else "/data"
