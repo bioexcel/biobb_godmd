@@ -72,11 +72,11 @@ class GOdMDRun(BiobbObject):
         input_pdb_target_path: str,
         input_aln_orig_path: str,
         input_aln_target_path: str,
-        input_config_path: Optional[str],
         output_log_path: str,
         output_ene_path: str,
         output_trj_path: str,
         output_pdb_path: str,
+        input_config_path: Optional[str] = None,
         properties: Optional[dict] = None,
         **kwargs,
     ) -> None:
