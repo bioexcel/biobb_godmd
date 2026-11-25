@@ -291,16 +291,6 @@ class GOdMDPrep(BiobbObject):
             aln2File.write("%s%s\n" % (pair[1][1], pair[1][2].replace(" ", "")))
         aln2File.close()
 
-        # Copy files to host
-        self.copy_to_host()
-
-        # Remove temporary folder(s)
-        self.remove_tmp_files()
-
-        self.check_arguments(output_files_created=True, raise_exception=False)
-
-        return self.return_code
-
 
 def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
                output_aln_orig_path: str, output_aln_target_path: str,

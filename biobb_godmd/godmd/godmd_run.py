@@ -212,16 +212,6 @@ class GOdMDRun(BiobbObject):
         )
         shutil.copy2(str(generated_output), str(staged_output))
 
-        # Copy files to host
-        self.copy_to_host()
-
-        # Remove temporary folder(s)
-        self.remove_tmp_files()
-
-        self.check_arguments(output_files_created=True, raise_exception=False)
-
-        return self.return_code
-
 
 def godmd_run(
     input_pdb_orig_path: str,
