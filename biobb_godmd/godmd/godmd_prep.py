@@ -54,12 +54,7 @@ class GOdMDPrep(BiobbObject):
     def __init__(self, input_pdb_orig_path: str, input_pdb_target_path: str,
                  output_aln_orig_path: str, output_aln_target_path: str,
                  properties: Optional[dict] = None, **kwargs) -> None:
-
-        properties = properties or {}
-
-        # Call parent class constructor
-        super().__init__(properties)
-        self.locals_var_dict = locals().copy()
+        super().__init__(**locals())
 
         self.AA_TRANSLATOR = {'GLY': 'G',
                               'ALA': 'A',
@@ -91,21 +86,6 @@ class GOdMDPrep(BiobbObject):
                               'HIE': 'H',
                               'HID': 'H',
                               'HIP': 'H'}
-
-        # Input/Output files
-        self.io_dict = {
-            'in': {'input_pdb_orig_path': input_pdb_orig_path,
-                   'input_pdb_target_path': input_pdb_target_path},
-            'out': {'output_aln_orig_path': output_aln_orig_path,
-                    'output_aln_target_path': output_aln_target_path}
-        }
-
-        # Properties specific for BB
-        self.properties = properties
-        self.gapopen = properties.get('gapopen', 12.0)
-        self.gapextend = properties.get('gapextend', 2.0)
-        self.datafile = properties.get('datafile', "EPAM250")
-        self.binary_path = properties.get('binary_path', "water")
 
     def extract_sequence(self, pdb):
         '''

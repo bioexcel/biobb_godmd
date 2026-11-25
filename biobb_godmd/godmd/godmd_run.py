@@ -80,33 +80,10 @@ class GOdMDRun(BiobbObject):
         properties: Optional[dict] = None,
         **kwargs,
     ) -> None:
-        properties = properties or {}
-
-        # Call parent class constructor
-        super().__init__(properties)
-        self.locals_var_dict = locals().copy()
-
-        # Input/Output files
-        self.io_dict = {
-            "in": {
-                "input_pdb_orig_path": input_pdb_orig_path,
-                "input_pdb_target_path": input_pdb_target_path,
-                "input_aln_orig_path": input_aln_orig_path,
-                "input_aln_target_path": input_aln_target_path,
-                "input_config_path": input_config_path,
-            },
-            "out": {
-                "output_log_path": output_log_path,
-                "output_ene_path": output_ene_path,
-                "output_trj_path": output_trj_path,
-                "output_pdb_path": output_pdb_path,
-            },
-        }
+        super().__init__(**locals())
 
         # Properties specific for BB
-        self.properties = properties
-        self.godmdin = {k: str(v) for k, v in properties.get("godmdin", dict()).items()}
-        self.binary_path = properties.get("binary_path", "discrete")
+        self.godmdin = {k: str(v) for k, v in self.godmdin.items()}
 
         # self.check_arguments()
 
