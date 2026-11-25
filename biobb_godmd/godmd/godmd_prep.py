@@ -206,7 +206,7 @@ class GOdMDPrep(BiobbObject):
             resid_pairs += [(resids1[idx1], resids2[idx2])]
         # Check contents of the residues of the alignment
         if len(resid_pairs) == 0:  # Alignment file was empty or there was no possible matching residues between the PDBs
-            fu.log('Alignment file was empty or there was no possible matching residues between the PDBs' % self.stage_io_dict["unique_dir"], self.out_log)
+            fu.log('Alignment file was empty or there was no possible matching residues between the PDBs', self.out_log)
             return False, False
         else:
             return seq_id, resid_pairs
@@ -226,9 +226,9 @@ class GOdMDPrep(BiobbObject):
         seq2, resids2 = self.extract_sequence(pdb2)
 
         if len(seq1) < 50:
-            fu.log('WARNING: Short sequence (ORIGIN)' % self.stage_io_dict["unique_dir"], self.out_log)
+            fu.log('WARNING: Short sequence (ORIGIN)', self.out_log)
         if len(seq2) < 50:
-            fu.log('WARNING: Short sequence (TARGET)' % self.stage_io_dict["unique_dir"], self.out_log)
+            fu.log('WARNING: Short sequence (TARGET)', self.out_log)
 
         # Produce FASTA files
         name1 = "fasta1.fa"
