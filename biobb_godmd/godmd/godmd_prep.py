@@ -216,8 +216,8 @@ class GOdMDPrep(BiobbObject):
 
         # Starting the work...
         # Parsing the input PDB files
-        pdb1 = self.io_dict["in"]["input_pdb_orig_path"]
-        pdb2 = self.io_dict["in"]["input_pdb_target_path"]
+        pdb1 = self.sandbox_file("input_pdb_orig_path")
+        pdb2 = self.sandbox_file("input_pdb_target_path")
 
         # Generate sequence of first PDB
         seq1, resids1 = self.extract_sequence(pdb1)
@@ -279,13 +279,13 @@ class GOdMDPrep(BiobbObject):
         # to drive the superimposition
         seq_id, resid_pairs = self.retrieve_alignment(waterFilename, resids1, resids2)
 
-        aln1Filename = self.io_dict["out"]["output_aln_orig_path"]
+        aln1Filename = self.sandbox_file("output_aln_orig_path")
         aln1File = open(aln1Filename, 'w')
         for pair in resid_pairs:
             aln1File.write("%s%s\n" % (pair[0][1], pair[0][2].replace(" ", "")))
         aln1File.close()
 
-        aln2Filename = self.io_dict["out"]["output_aln_target_path"]
+        aln2Filename = self.sandbox_file("output_aln_target_path")
         aln2File = open(aln2Filename, 'w')
         for pair in resid_pairs:
             aln2File.write("%s%s\n" % (pair[1][1], pair[1][2].replace(" ", "")))
