@@ -81,16 +81,10 @@ class GOdMDRun(BiobbObject):
     ) -> None:
         super().__init__(**locals())
 
-        # Properties specific for BB
-        self.godmdin = {k: str(v) for k, v in self.godmdin.items()}
-
-        # self.check_arguments()
-
-    def create_godmdin(self, path: Optional[str] = None) -> str:
-        """Creates a GOdMD configuration file (godmdin) using the properties file settings"""
+    def create_godmdin(self, path: str) -> str:
+        """Go from the input_config_path file and the godmdin property to the GOdMD configuration
+        file **path**, which is returned."""
         godmdin_list = []
-
-        self.output_godmdin_path = path
 
         if self.io_dict["in"]["input_config_path"]:
             # GOdMD input parameters read from an input godmdin file
@@ -124,7 +118,7 @@ class GOdMDRun(BiobbObject):
                 )
 
         # Writing MD configuration file (mdin)
-        with open(str(self.output_godmdin_path), "w") as godmdin:
+        with open(path, "w") as godmdin:
             # GOdMDIN parameters added by the biobb_godmd module
             godmdin.write(
                 "!This godmdin file has been created by the biobb_godmd module from the BioBB library \n\n"
@@ -138,12 +132,12 @@ class GOdMDRun(BiobbObject):
 
             godmdin.write("&END\n")
 
-        return str(self.output_godmdin_path)
+        return path
 
     def run(self):
         """Launches the execution of the GOdMDRun module."""
 
-        # Creating GOdMD input file
+        # Creating GOdMD input file: the provenance reads it from output_godmdin_path
         self.output_godmdin_path = self.create_godmdin(
             path=str(Path(self.stage_io_dict["unique_dir"]).joinpath("godmd.in"))
         )
@@ -176,6 +170,11 @@ class GOdMDRun(BiobbObject):
         # discrete writes the output structure as reference.pdb in the sandbox
         generated_output = Path(self.stage_io_dict["unique_dir"]).joinpath("reference.pdb")
         shutil.copy2(str(generated_output), self.sandbox_file("output_pdb_path"))
+
+    def write_parameter_files(self, directory: str) -> list[str]:
+        """Write the godmd.in file to **directory** without executing GOdMD, used by the
+        provenance of the executions skipped by the restart property."""
+        return [self.create_godmdin(str(Path(directory).joinpath("godmd.in")))]
 
 
 godmd_run = launcher(GOdMDRun)

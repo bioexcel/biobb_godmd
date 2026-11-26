@@ -1,5 +1,11 @@
 # Biobb GOdMD changelog
 
+## [Unreleased]
+
+### Changes
+
+* [UPDATE] godmd_run: an execution skipped by the `restart` property now records the parameters of the GOdMD configuration file in its provenance, like the executions that run.
+
 ## What's new in version [5.3.1](https://github.com/bioexcel/biobb_amber/releases/tag/v5.3.1)?
 
 ### Changes
