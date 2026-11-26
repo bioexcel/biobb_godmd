@@ -2,7 +2,7 @@
 
 """Module containing the GOdMDPrep class and the command line interface."""
 from typing import Optional
-from pathlib import Path, PurePath
+from pathlib import Path
 from biobb_common.generic.biobb_object import BiobbObject, launcher
 from biobb_common.tools import file_utils as fu
 
@@ -224,25 +224,16 @@ class GOdMDPrep(BiobbObject):
 
         waterFilename = str(Path(self.stage_io_dict["unique_dir"]).joinpath("water_align.out"))
 
-        # Container-aware working dir (mirrors godmd_run): in container mode the sandbox
-        # is mounted at container_volume_path (default /data) and the command runs there,
-        # so reference the intermediate files by name rather than by host-absolute path
-        # (which does not exist inside the container).
-        if self.container_path:
-            working_dir = self.container_volume_path if self.container_volume_path else "/data"
-        else:
-            working_dir = self.stage_io_dict.get("unique_dir", "")
-
         # water -auto -outfile=water_align.out -asequence=1ake.chains.nolig.pdb.fa
         # -bsequence=4ake.chains.pdb.fa -gapopen=12 -gapextend=2
         # -datafile=EPAM250 -aformat=markx10
 
         # Command line
-        self.cmd = ["cd", working_dir, ";", self.binary_path,
+        self.cmd = [self.binary_path,
                     '-auto',
-                    '-outfile', PurePath(waterFilename).name,
-                    '-asequence', PurePath(fasta1Filename).name,
-                    '-bsequence', PurePath(fasta2Filename).name,
+                    '-outfile', self.staged_path(waterFilename),
+                    '-asequence', self.staged_path(fasta1Filename),
+                    '-bsequence', self.staged_path(fasta2Filename),
                     '-gapopen', str(self.gapopen),
                     '-gapextend', str(self.gapextend),
                     '-datafile', self.datafile,

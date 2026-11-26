@@ -3,7 +3,7 @@
 """Module containing the GOdMDRun class and the command line interface."""
 
 import shutil
-from pathlib import Path, PurePath
+from pathlib import Path
 from typing import Optional
 
 from biobb_common.generic.biobb_object import BiobbObject, launcher
@@ -34,7 +34,6 @@ class GOdMDRun(BiobbObject):
             * **container_path** (*str*) - (None) Container path definition.
             * **container_image** (*str*) - ('afandiadib/ambertools:serial') Container image definition.
             * **container_volume_path** (*str*) - ('/tmp') Container volume path definition.
-            * **container_working_dir** (*str*) - (None) Container working directory definition.
             * **container_user_id** (*str*) - (None) Container user_id definition.
             * **container_shell_path** (*str*) - ('/bin/bash') Path to default shell inside the container.
 
@@ -144,11 +143,6 @@ class GOdMDRun(BiobbObject):
     def run(self):
         """Launches the execution of the GOdMDRun module."""
 
-        if self.container_path:
-            working_dir = self.container_volume_path if self.container_volume_path else "/data"
-        else:
-            working_dir = self.stage_io_dict.get("unique_dir", "")
-
         # Creating GOdMD input file
         self.output_godmdin_path = self.create_godmdin(
             path=str(Path(self.stage_io_dict["unique_dir"]).joinpath("godmd.in"))
@@ -157,37 +151,31 @@ class GOdMDRun(BiobbObject):
         # Command line
         # discrete -i $fileName.in -pdbin $pdbch1 -pdbtarg $pdbch2 -ener $fileName.ene -trj $fileName.crd -p1 $alignFile1 -p2 $alignFile2 -o $fileName.log >& $fileName.out
         self.cmd = [
-            "cd",
-            working_dir,
-            ";",
             self.binary_path,
             "-i",
-            PurePath(self.output_godmdin_path).name,
+            self.staged_path(self.output_godmdin_path),
             "-pdbin",
-            PurePath(self.stage_io_dict["in"]["input_pdb_orig_path"]).name,
+            self.stage_io_dict["in"]["input_pdb_orig_path"],
             "-pdbtarg",
-            PurePath(self.stage_io_dict["in"]["input_pdb_target_path"]).name,
+            self.stage_io_dict["in"]["input_pdb_target_path"],
             "-p1",
-            PurePath(self.stage_io_dict["in"]["input_aln_orig_path"]).name,
+            self.stage_io_dict["in"]["input_aln_orig_path"],
             "-p2",
-            PurePath(self.stage_io_dict["in"]["input_aln_target_path"]).name,
+            self.stage_io_dict["in"]["input_aln_target_path"],
             "-o",
-            PurePath(self.stage_io_dict["out"]["output_log_path"]).name,
+            self.stage_io_dict["out"]["output_log_path"],
             "-ener",
-            PurePath(self.stage_io_dict["out"]["output_ene_path"]).name,
+            self.stage_io_dict["out"]["output_ene_path"],
             "-trj",
-            PurePath(self.stage_io_dict["out"]["output_trj_path"]).name,
+            self.stage_io_dict["out"]["output_trj_path"],
         ]
 
         # Run Biobb block
         self.run_biobb()
 
-        # Stage the fixed-name output file so copy_to_host can remap it correctly.
-        generated_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath("reference.pdb")
-        staged_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath(
-            Path(self.stage_io_dict["out"]["output_pdb_path"]).name
-        )
-        shutil.copy2(str(generated_output), str(staged_output))
+        # discrete writes the output structure as reference.pdb in the sandbox
+        generated_output = Path(self.stage_io_dict["unique_dir"]).joinpath("reference.pdb")
+        shutil.copy2(str(generated_output), self.sandbox_file("output_pdb_path"))
 
 
 godmd_run = launcher(GOdMDRun)
