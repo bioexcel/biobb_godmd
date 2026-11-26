@@ -3,7 +3,7 @@
 """Module containing the GOdMDPrep class and the command line interface."""
 from typing import Optional
 from pathlib import Path, PurePath
-from biobb_common.generic.biobb_object import BiobbObject
+from biobb_common.generic.biobb_object import BiobbObject, launcher
 from biobb_common.tools import file_utils as fu
 
 
@@ -272,16 +272,7 @@ class GOdMDPrep(BiobbObject):
         aln2File.close()
 
 
-def godmd_prep(input_pdb_orig_path: str, input_pdb_target_path: str,
-               output_aln_orig_path: str, output_aln_target_path: str,
-               properties: Optional[dict] = None, **kwargs) -> int:
-    """Create :class:`GOdMDPrep <godmd.godmd_prep.GOdMDPrep>`godmd.godmd_prep.GOdMDPrep class and
-    execute :meth:`launch() <godmd.godmd_prep.GOdMDPrep.launch>` method"""
-    return GOdMDPrep(**dict(locals())).launch()
-
-
-godmd_prep.__doc__ = GOdMDPrep.__doc__
-main = GOdMDPrep.get_main(godmd_prep, "Prepares input files for the GOdMD tool.")
+godmd_prep = launcher(GOdMDPrep)
 
 if __name__ == '__main__':
-    main()
+    GOdMDPrep.main()

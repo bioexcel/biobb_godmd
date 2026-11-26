@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path, PurePath
 from typing import Optional
 
-from biobb_common.generic.biobb_object import BiobbObject
+from biobb_common.generic.biobb_object import BiobbObject, launcher
 
 
 class GOdMDRun(BiobbObject):
@@ -190,26 +190,7 @@ class GOdMDRun(BiobbObject):
         shutil.copy2(str(generated_output), str(staged_output))
 
 
-def godmd_run(
-    input_pdb_orig_path: str,
-    input_pdb_target_path: str,
-    input_aln_orig_path: str,
-    input_aln_target_path: str,
-    output_log_path: str,
-    output_ene_path: str,
-    output_trj_path: str,
-    output_pdb_path: str,
-    input_config_path: Optional[str] = None,
-    properties: Optional[dict] = None,
-    **kwargs,
-) -> int:
-    """Create :class:`GOdMDRun <godmd.godmd_run.GOdMDRun>`godmd.godmd_run.GOdMDRun class and
-    execute :meth:`launch() <godmd.godmd_run.GOdMDRun.launch>` method"""
-    return GOdMDRun(**dict(locals())).launch()
-
-
-godmd_run.__doc__ = GOdMDRun.__doc__
-main = GOdMDRun.get_main(godmd_run, "Computing conformational transition trajectories for proteins using GOdMD tool.")
+godmd_run = launcher(GOdMDRun)
 
 if __name__ == "__main__":
-    main()
+    GOdMDRun.main()

@@ -23,8 +23,8 @@ setuptools.setup(
     python_requires=">=3.10",
     entry_points={
         "console_scripts": [
-            "godmd_prep = biobb_godmd.godmd.godmd_prep:main",
-            "godmd_run = biobb_godmd.godmd.godmd_run:main",
+            "godmd_prep = biobb_godmd.godmd.godmd_prep:GOdMDPrep.main",
+            "godmd_run = biobb_godmd.godmd.godmd_run:GOdMDRun.main",
         ]
     },
     classifiers=[
