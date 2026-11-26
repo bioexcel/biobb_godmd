@@ -6,6 +6,38 @@ from pathlib import Path
 from biobb_common.generic.biobb_object import BiobbObject, launcher
 from biobb_common.tools import file_utils as fu
 
+# One-letter code of the residue names, protonation states included
+AA_TRANSLATOR = {'GLY': 'G',
+                 'ALA': 'A',
+                 'VAL': 'V',
+                 'LEU': 'L',
+                 'ILE': 'I',
+                 'MET': 'M',
+                 'PHE': 'F',
+                 'TRP': 'W',
+                 'PRO': 'P',
+                 'SER': 'S',
+                 'THR': 'T',
+                 'CYS': 'C',
+                 'CYX': 'C',
+                 'CYM': 'C',
+                 'TYR': 'Y',
+                 'TYM': 'Y',
+                 'ASN': 'N',
+                 'GLN': 'Q',
+                 'ASP': 'D',
+                 'ASH': 'D',
+                 'GLU': 'E',
+                 'GLH': 'E',
+                 'LYS': 'K',
+                 'LYN': 'K',
+                 'ARG': 'R',
+                 'ARN': 'R',
+                 'HIS': 'H',
+                 'HIE': 'H',
+                 'HID': 'H',
+                 'HIP': 'H'}
+
 
 class GOdMDPrep(BiobbObject):
     """
@@ -56,37 +88,6 @@ class GOdMDPrep(BiobbObject):
                  properties: Optional[dict] = None, **kwargs) -> None:
         super().__init__(**locals())
 
-        self.AA_TRANSLATOR = {'GLY': 'G',
-                              'ALA': 'A',
-                              'VAL': 'V',
-                              'LEU': 'L',
-                              'ILE': 'I',
-                              'MET': 'M',
-                              'PHE': 'F',
-                              'TRP': 'W',
-                              'PRO': 'P',
-                              'SER': 'S',
-                              'THR': 'T',
-                              'CYS': 'C',
-                              'CYX': 'C',
-                              'CYM': 'C',
-                              'TYR': 'Y',
-                              'TYM': 'Y',
-                              'ASN': 'N',
-                              'GLN': 'Q',
-                              'ASP': 'D',
-                              'ASH': 'D',
-                              'GLU': 'E',
-                              'GLH': 'E',
-                              'LYS': 'K',
-                              'LYN': 'K',
-                              'ARG': 'R',
-                              'ARN': 'R',
-                              'HIS': 'H',
-                              'HIE': 'H',
-                              'HID': 'H',
-                              'HIP': 'H'}
-
     def extract_sequence(self, pdb):
         '''
         Parses a PDB file to retrieve the sequence of a certain chain.
@@ -108,20 +109,19 @@ class GOdMDPrep(BiobbObject):
                     if alternate != 'A':
                         continue  # if alt loc, only A-labeled residues
                 resname = line[17:20].replace(" ", "")
-                if resname not in self.AA_TRANSLATOR:
+                if resname not in AA_TRANSLATOR:
                     continue
                 resnum = line[22:26].replace(" ", "")
                 icode = line[26:27]
-                seq += self.AA_TRANSLATOR[resname]
+                seq += AA_TRANSLATOR[resname]
                 resids += [(' ', int(resnum), icode)]  # BioPython's standard PDB atom id (' ',resid,insertioncode) (e.g. (' ',40,'B'))
 
         return seq, resids
 
     def retrieve_alignment(self, waterFile, resids1, resids2):
         '''
-        Gets the FASTA sequence of two PDB structures and a list of their residues in Biopython residue format.
-        Opens a file containing a local sequence alignment (Water program of EMBOSS package) between those two PDB structures.
-        Returns the sequence identity and the pairs of residues of the alignment.
+        Goes from a local sequence alignment of two PDB structures (Water program of the EMBOSS package)
+        and the lists of their residues in Biopython residue format to the pairs of aligned residues.
         '''
         # Parsing Water alignment file
         is_alignment = 0
@@ -129,7 +129,6 @@ class GOdMDPrep(BiobbObject):
         is_sseq = 0
         qseq = ""
         sseq = ""
-        ident = ""
         next_seq = 0
         qstart = ""
         sstart = ""
@@ -142,9 +141,7 @@ class GOdMDPrep(BiobbObject):
                     else:
                         is_alignment = 1
                 else:
-                    if line.startswith("; sw_ident:"):
-                        ident = line[12:]
-                    elif line.startswith("; al_start:"):
+                    if line.startswith("; al_start:"):
                         if next_seq == 0:
                             qstart = line[12:]
                         else:
@@ -167,9 +164,6 @@ class GOdMDPrep(BiobbObject):
                             else:
                                 is_sseq = 0
 
-        # Get the Sequence Identity of the alignment
-        seq_id = float(ident)
-
         # Get the residues of the alignment.
         # -2 is applied because in the first iteration of next loop all values will always be increased by 1 (local alignment)
         # and we also need to convert the number into a python index to retrieve the proper token in the list
@@ -185,11 +179,11 @@ class GOdMDPrep(BiobbObject):
                 continue
             resid_pairs += [(resids1[idx1], resids2[idx2])]
         # Check contents of the residues of the alignment
-        if len(resid_pairs) == 0:  # Alignment file was empty or there was no possible matching residues between the PDBs
-            fu.log('Alignment file was empty or there was no possible matching residues between the PDBs', self.out_log)
-            return False, False
-        else:
-            return seq_id, resid_pairs
+        if not resid_pairs:
+            message = 'Alignment file was empty or there were no matching residues between the PDBs'
+            fu.log(message, self.out_log)
+            raise ValueError(message)
+        return resid_pairs
 
     def run(self):
         """Launches the execution of the GOdMDPrep module."""
@@ -211,16 +205,11 @@ class GOdMDPrep(BiobbObject):
             fu.log('WARNING: Short sequence (TARGET)', self.out_log)
 
         # Produce FASTA files
-        name1 = "fasta1.fa"
-        name2 = "fasta2.fa"
-        fasta1Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath(name1))
-        fasta1File = open(fasta1Filename, "w")
-        fasta1File.write(">"+pdb1+"\n"+seq1)
-        fasta1File.close()
-        fasta2Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath(name2))
-        fasta2File = open(fasta2Filename, "w")
-        fasta2File.write(">"+pdb2+"\n"+seq2)
-        fasta2File.close()
+        fasta1Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath("fasta1.fa"))
+        fasta2Filename = str(Path(self.stage_io_dict["unique_dir"]).joinpath("fasta2.fa"))
+        for fasta_path, pdb, seq in ((fasta1Filename, pdb1, seq1), (fasta2Filename, pdb2, seq2)):
+            with open(fasta_path, "w") as fasta_file:
+                fasta_file.write(">" + pdb + "\n" + seq)
 
         waterFilename = str(Path(self.stage_io_dict["unique_dir"]).joinpath("water_align.out"))
 
@@ -245,22 +234,16 @@ class GOdMDPrep(BiobbObject):
 
         # Starting post-alignment process: generating .aln files
 
-        # Retrieve sequence identity of the pair, based on local sequence alignment
-        # previously computed, and generate the pairs of residues from both structres
-        # to drive the superimposition
-        seq_id, resid_pairs = self.retrieve_alignment(waterFilename, resids1, resids2)
+        # Generate the pairs of residues from both structures, based on the local sequence
+        # alignment previously computed, to drive the superimposition
+        resid_pairs = self.retrieve_alignment(waterFilename, resids1, resids2)
 
-        aln1Filename = self.sandbox_file("output_aln_orig_path")
-        aln1File = open(aln1Filename, 'w')
-        for pair in resid_pairs:
-            aln1File.write("%s%s\n" % (pair[0][1], pair[0][2].replace(" ", "")))
-        aln1File.close()
-
-        aln2Filename = self.sandbox_file("output_aln_target_path")
-        aln2File = open(aln2Filename, 'w')
-        for pair in resid_pairs:
-            aln2File.write("%s%s\n" % (pair[1][1], pair[1][2].replace(" ", "")))
-        aln2File.close()
+        # One line per aligned residue: residue number and insertion code
+        orig_resids, target_resids = zip(*resid_pairs)
+        for file_ref, resids in (("output_aln_orig_path", orig_resids), ("output_aln_target_path", target_resids)):
+            with open(self.sandbox_file(file_ref), "w") as aln_file:
+                for _, resnum, icode in resids:
+                    aln_file.write(f"{resnum}{icode.replace(' ', '')}\n")
 
 
 godmd_prep = launcher(GOdMDPrep)
