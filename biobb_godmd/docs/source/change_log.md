@@ -2,9 +2,16 @@
 
 ## [Unreleased]
 
+## What's new in version [5.4.0](https://github.com/bioexcel/biobb_godmd/releases/tag/v5.4.0)?
+
 ### Changes
 
-* [UPDATE] godmd_run: an execution skipped by the `restart` property now records the parameters of the GOdMD configuration file in its provenance, like the executions that run.
+* [UPDATE] Update to biobb_common 5.4.0.
+* [UPDATE] `godmd_run`: an execution skipped by the `restart` property now records the parameters of the GOdMD configuration file in its provenance, like the executions that run.
+* [FIX] `godmd_prep`: a structure with fewer than 50 residues no longer stops the block with a `TypeError`; the short sequence warning is written to the log.
+* [FIX] `godmd_run`: `input_config_path` is optional in the `GOdMDRun` class too, as documented and as in the `godmd_run()` function.
+* [UPDATE] `godmd_run`: the `container_working_dir` property is gone: the GOdMD command runs inside the sandbox, also in containers.
+* [UPDATE] Python 3.11 to 3.13.
 
 ## What's new in version [5.3.1](https://github.com/bioexcel/biobb_amber/releases/tag/v5.3.1)?
 
