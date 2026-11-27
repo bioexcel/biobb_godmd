@@ -3,13 +3,10 @@
 """Module containing the GOdMDRun class and the command line interface."""
 
 import shutil
-from pathlib import Path, PurePath
+from pathlib import Path
 from typing import Optional
 
-from biobb_common.generic.biobb_object import BiobbObject
-from biobb_common.tools.file_utils import launchlogger
-
-from biobb_godmd.godmd.common import check_input_path, check_output_path
+from biobb_common.generic.biobb_object import BiobbObject, launcher
 
 
 class GOdMDRun(BiobbObject):
@@ -37,7 +34,6 @@ class GOdMDRun(BiobbObject):
             * **container_path** (*str*) - (None) Container path definition.
             * **container_image** (*str*) - ('afandiadib/ambertools:serial') Container image definition.
             * **container_volume_path** (*str*) - ('/tmp') Container volume path definition.
-            * **container_working_dir** (*str*) - (None) Container working directory definition.
             * **container_user_id** (*str*) - (None) Container user_id definition.
             * **container_shell_path** (*str*) - ('/bin/bash') Path to default shell inside the container.
 
@@ -75,121 +71,20 @@ class GOdMDRun(BiobbObject):
         input_pdb_target_path: str,
         input_aln_orig_path: str,
         input_aln_target_path: str,
-        input_config_path: Optional[str],
         output_log_path: str,
         output_ene_path: str,
         output_trj_path: str,
         output_pdb_path: str,
+        input_config_path: Optional[str] = None,
         properties: Optional[dict] = None,
         **kwargs,
     ) -> None:
-        properties = properties or {}
+        super().__init__(**locals())
 
-        # Call parent class constructor
-        super().__init__(properties)
-        self.locals_var_dict = locals().copy()
-
-        # Input/Output files
-        self.io_dict = {
-            "in": {
-                "input_pdb_orig_path": input_pdb_orig_path,
-                "input_pdb_target_path": input_pdb_target_path,
-                "input_aln_orig_path": input_aln_orig_path,
-                "input_aln_target_path": input_aln_target_path,
-                "input_config_path": input_config_path,
-            },
-            "out": {
-                "output_log_path": output_log_path,
-                "output_ene_path": output_ene_path,
-                "output_trj_path": output_trj_path,
-                "output_pdb_path": output_pdb_path,
-            },
-        }
-
-        # Properties specific for BB
-        self.properties = properties
-        self.godmdin = {k: str(v) for k, v in properties.get("godmdin", dict()).items()}
-        self.binary_path = properties.get("binary_path", "discrete")
-
-        # Check the properties
-        self.check_properties(properties)
-        # self.check_arguments()
-
-    def check_data_params(self, out_log, out_err):
-        """Checks input/output paths correctness"""
-
-        # Check input(s)
-        self.io_dict["in"]["input_pdb_orig_path"] = check_input_path(
-            self.io_dict["in"]["input_pdb_orig_path"],
-            "input_pdb_orig_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_pdb_target_path"] = check_input_path(
-            self.io_dict["in"]["input_pdb_target_path"],
-            "input_pdb_target_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_aln_orig_path"] = check_input_path(
-            self.io_dict["in"]["input_aln_orig_path"],
-            "input_aln_orig_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_aln_target_path"] = check_input_path(
-            self.io_dict["in"]["input_aln_target_path"],
-            "input_aln_target_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["in"]["input_config_path"] = check_input_path(
-            self.io_dict["in"]["input_config_path"],
-            "input_config_path",
-            True,
-            out_log,
-            self.__class__.__name__,
-        )
-
-        # Check output(s)
-        self.io_dict["out"]["output_log_path"] = check_output_path(
-            self.io_dict["out"]["output_log_path"],
-            "output_log_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_ene_path"] = check_output_path(
-            self.io_dict["out"]["output_ene_path"],
-            "output_ene_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_trj_path"] = check_output_path(
-            self.io_dict["out"]["output_trj_path"],
-            "output_trj_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-        self.io_dict["out"]["output_pdb_path"] = check_output_path(
-            self.io_dict["out"]["output_pdb_path"],
-            "output_pdb_path",
-            False,
-            out_log,
-            self.__class__.__name__,
-        )
-
-    def create_godmdin(self, path: Optional[str] = None) -> str:
-        """Creates a GOdMD configuration file (godmdin) using the properties file settings"""
+    def create_godmdin(self, path: str) -> str:
+        """Go from the input_config_path file and the godmdin property to the GOdMD configuration
+        file **path**, which is returned."""
         godmdin_list = []
-
-        self.output_godmdin_path = path
 
         if self.io_dict["in"]["input_config_path"]:
             # GOdMD input parameters read from an input godmdin file
@@ -223,7 +118,7 @@ class GOdMDRun(BiobbObject):
                 )
 
         # Writing MD configuration file (mdin)
-        with open(str(self.output_godmdin_path), "w") as godmdin:
+        with open(path, "w") as godmdin:
             # GOdMDIN parameters added by the biobb_godmd module
             godmdin.write(
                 "!This godmdin file has been created by the biobb_godmd module from the BioBB library \n\n"
@@ -237,26 +132,12 @@ class GOdMDRun(BiobbObject):
 
             godmdin.write("&END\n")
 
-        return str(self.output_godmdin_path)
+        return path
 
-    @launchlogger
-    def launch(self):
+    def run(self):
         """Launches the execution of the GOdMDRun module."""
 
-        # check input/output paths and parameters
-        self.check_data_params(self.out_log, self.err_log)
-
-        # Setup Biobb
-        if self.check_restart():
-            return 0
-        self.stage_files()
-
-        if self.container_path:
-            working_dir = self.container_volume_path if self.container_volume_path else "/data"
-        else:
-            working_dir = self.stage_io_dict.get("unique_dir", "")
-
-        # Creating GOdMD input file
+        # Creating GOdMD input file: the provenance reads it from output_godmdin_path
         self.output_godmdin_path = self.create_godmdin(
             path=str(Path(self.stage_io_dict["unique_dir"]).joinpath("godmd.in"))
         )
@@ -264,69 +145,39 @@ class GOdMDRun(BiobbObject):
         # Command line
         # discrete -i $fileName.in -pdbin $pdbch1 -pdbtarg $pdbch2 -ener $fileName.ene -trj $fileName.crd -p1 $alignFile1 -p2 $alignFile2 -o $fileName.log >& $fileName.out
         self.cmd = [
-            "cd",
-            working_dir,
-            ";",
             self.binary_path,
             "-i",
-            PurePath(self.output_godmdin_path).name,
+            self.staged_path(self.output_godmdin_path),
             "-pdbin",
-            PurePath(self.stage_io_dict["in"]["input_pdb_orig_path"]).name,
+            self.stage_io_dict["in"]["input_pdb_orig_path"],
             "-pdbtarg",
-            PurePath(self.stage_io_dict["in"]["input_pdb_target_path"]).name,
+            self.stage_io_dict["in"]["input_pdb_target_path"],
             "-p1",
-            PurePath(self.stage_io_dict["in"]["input_aln_orig_path"]).name,
+            self.stage_io_dict["in"]["input_aln_orig_path"],
             "-p2",
-            PurePath(self.stage_io_dict["in"]["input_aln_target_path"]).name,
+            self.stage_io_dict["in"]["input_aln_target_path"],
             "-o",
-            PurePath(self.stage_io_dict["out"]["output_log_path"]).name,
+            self.stage_io_dict["out"]["output_log_path"],
             "-ener",
-            PurePath(self.stage_io_dict["out"]["output_ene_path"]).name,
+            self.stage_io_dict["out"]["output_ene_path"],
             "-trj",
-            PurePath(self.stage_io_dict["out"]["output_trj_path"]).name,
+            self.stage_io_dict["out"]["output_trj_path"],
         ]
 
         # Run Biobb block
         self.run_biobb()
 
-        # Stage the fixed-name output file so copy_to_host can remap it correctly.
-        generated_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath("reference.pdb")
-        staged_output = Path(self.stage_io_dict.get("unique_dir", "")).joinpath(
-            Path(self.stage_io_dict["out"]["output_pdb_path"]).name
-        )
-        shutil.copy2(str(generated_output), str(staged_output))
+        # discrete writes the output structure as reference.pdb in the sandbox
+        generated_output = Path(self.stage_io_dict["unique_dir"]).joinpath("reference.pdb")
+        shutil.copy2(str(generated_output), self.sandbox_file("output_pdb_path"))
 
-        # Copy files to host
-        self.copy_to_host()
-
-        # Remove temporary folder(s)
-        self.remove_tmp_files()
-
-        self.check_arguments(output_files_created=True, raise_exception=False)
-
-        return self.return_code
+    def write_parameter_files(self, directory: str) -> list[str]:
+        """Write the godmd.in file to **directory** without executing GOdMD, used by the
+        provenance of the executions skipped by the restart property."""
+        return [self.create_godmdin(str(Path(directory).joinpath("godmd.in")))]
 
 
-def godmd_run(
-    input_pdb_orig_path: str,
-    input_pdb_target_path: str,
-    input_aln_orig_path: str,
-    input_aln_target_path: str,
-    output_log_path: str,
-    output_ene_path: str,
-    output_trj_path: str,
-    output_pdb_path: str,
-    input_config_path: Optional[str] = None,
-    properties: Optional[dict] = None,
-    **kwargs,
-) -> int:
-    """Create :class:`GOdMDRun <godmd.godmd_run.GOdMDRun>`godmd.godmd_run.GOdMDRun class and
-    execute :meth:`launch() <godmd.godmd_run.GOdMDRun.launch>` method"""
-    return GOdMDRun(**dict(locals())).launch()
-
-
-godmd_run.__doc__ = GOdMDRun.__doc__
-main = GOdMDRun.get_main(godmd_run, "Computing conformational transition trajectories for proteins using GOdMD tool.")
+godmd_run = launcher(GOdMDRun)
 
 if __name__ == "__main__":
-    main()
+    GOdMDRun.main()

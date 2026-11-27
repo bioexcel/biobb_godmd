@@ -2,4 +2,4 @@ from . import godmd
 
 name = "biobb_godmd"
 __all__ = ["godmd"]
-__version__ = "5.3.1"
+__version__ = "5.4.0"
